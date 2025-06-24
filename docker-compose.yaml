@@ -2,7 +2,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15
-    container_name: postgres_db
+    container_name: postgres_PDS
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
