@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.pds.model.Deporte;
-import com.example.pds.service.DeporteService;
+import com.example.pds.service.implementation.DeporteServiceImpl;
 
 @RestController
 @RequestMapping("/deportes")
 public class DeporteController {
 
-    private DeporteService deporteService;
+    private DeporteServiceImpl deporteService;
 
     @Autowired
-    public DeporteController(DeporteService deporteService) {
+    public DeporteController(DeporteServiceImpl deporteService) {
         this.deporteService = deporteService;
     }
 

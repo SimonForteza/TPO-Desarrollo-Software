@@ -30,4 +30,8 @@ public class Partido {
     public int obtenerDuracion(){
         return deporte.getMinutosJuego();
     }
+
+    public int obtenerCantidadJugadores(){
+        return deporte.getCantidadJugadores();
+    }
 }
