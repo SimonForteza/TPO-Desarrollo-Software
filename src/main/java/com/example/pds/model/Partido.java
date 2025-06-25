@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "partidos")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "partidos")
 public class Partido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +26,10 @@ public class Partido {
     @ManyToOne
     @JoinColumn(name = "ubicacion_id")
     private Ubicacion ubicacion;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado")
+    private EstadoPartido estado;
 
     public int obtenerDuracion(){
         return deporte.getMinutosJuego();
