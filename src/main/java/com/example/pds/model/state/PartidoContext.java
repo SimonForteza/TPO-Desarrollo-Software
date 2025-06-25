@@ -2,7 +2,9 @@ package com.example.pds.model.state;
 
 import com.example.pds.model.Partido;
 import com.example.pds.model.factory.EstadoFactory;
+import lombok.Data;
 
+@Data
 public class PartidoContext {
     private Partido partido;
     private PartidoState estadoActual;

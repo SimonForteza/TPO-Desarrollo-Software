@@ -63,6 +63,7 @@ public class UsuarioServiceImpl implements UsuarioService {
         Ubicacion ubicacion = null;
         UbicacionDTO ubicacionDTO = dto.ubicacion();
         if (ubicacionDTO != null) {
+            // Busca la ubicacion en la API y devuelve [Latitud y Longitud]
             double[] coords = GeocodingUtil.getLatLongFromAddress(
                 ubicacionDTO.nombreCalle(),
                 ubicacionDTO.numero(),

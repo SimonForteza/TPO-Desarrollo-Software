@@ -3,6 +3,7 @@ package com.example.pds.service.implementation;
 import com.example.pds.model.EstadoPartido;
 import com.example.pds.model.Partido;
 import com.example.pds.model.Ubicacion;
+import com.example.pds.model.state.PartidoContext;
 import com.example.pds.repository.PartidoRepository;
 import com.example.pds.service.PartidoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,36 @@ public class PartidoServiceImpl implements PartidoService {
         Partido partidoGuardado = partidoRepository.save(partido);
         usuarioPartidoService.inscribirUsuarioAPartido(creador, partidoGuardado);
         return partidoGuardado;
+    }
+
+    @Override
+    public Partido finalizarPartido(Long idPartido) {
+        if (idPartido == null) {
+            throw new IllegalArgumentException("El ID del partido no puede ser nulo");
+        }
+
+        Partido partido = partidoRepository.findById(idPartido)
+            .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
+
+        PartidoContext context = new PartidoContext(partido);
+        context.finalizar();
+
+        return partidoRepository.save(context.getPartido());
+    }
+
+    @Override
+    public Partido cancelarPartido(Long idPartido) {
+        if (idPartido == null) {
+            throw new IllegalArgumentException("El ID del partido no puede ser nulo");
+        }
+
+        Partido partido = partidoRepository.findById(idPartido)
+                .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
+
+        PartidoContext context = new PartidoContext(partido);
+        context.cancelar();
+
+        return partidoRepository.save(context.getPartido());
     }
 
 

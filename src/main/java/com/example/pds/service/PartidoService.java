@@ -8,7 +8,7 @@ import com.example.pds.dto.CrearPartidoDTO;
 public interface PartidoService {
     Partido crearPartido(CrearPartidoDTO crearPartidoDTO);
     //Partido confirmarPartido(Long idPartido);
-    //Partido cancelarPartido(Long idPartido);
-    //Partido finalizarPartido(Long idPartido);
+    Partido finalizarPartido(Long idPartido);
+    Partido cancelarPartido(Long idPartido);
     //List<Partido> obtenerPartidos();
 }
