@@ -1,5 +1,6 @@
 package com.example.pds.service.implementation;
 
+import com.example.pds.model.EstadoPartido;
 import com.example.pds.model.Partido;
 import com.example.pds.model.Ubicacion;
 import com.example.pds.repository.PartidoRepository;
@@ -12,17 +13,23 @@ import java.util.List;
 
 @Service
 public class PartidoServiceImpl implements PartidoService {
+
     @Autowired
     private PartidoRepository partidoRepository;
 
     public Partido crearPartido(Partido partido) {
+        // Calculo del horario de finalizacion del partido
         LocalDateTime inicio = partido.getFechaHora();
         int duracion = partido.obtenerDuracion();
         LocalDateTime fin = inicio.plusMinutes(duracion);
+        // obtener la ubicacion del partido
         Ubicacion ubicacion = partido.getUbicacion();
 
-        // Buscar partidos en la misma ubicación
-        List<Partido> partidosEnUbicacion = partidoRepository.findByUbicacion(ubicacion);
+        // Busca los partidos de esa ubicacion (por nombre de calle y número)
+        List<Partido> partidosEnUbicacion = partidoRepository.findByUbicacion_NombreCalleAndUbicacion_Numero(
+            ubicacion.getNombreCalle(), ubicacion.getNumero()
+        );
+        // Verificar si hay superposicion de horarios
         for (Partido p : partidosEnUbicacion) {
             LocalDateTime inicioExistente = p.getFechaHora();
             int duracionExistente = p.obtenerDuracion();
@@ -32,6 +39,10 @@ public class PartidoServiceImpl implements PartidoService {
                 throw new RuntimeException("Ya existe un partido en esa ubicación y horario.");
             }
         }
+
+        partido.setEstado(EstadoPartido.NECESITAMOS_JUGADORES);
         return partidoRepository.save(partido);
     }
+
+    
 } 

@@ -11,14 +11,16 @@ public class Ubicacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombreCalle;
+    private String numero;
     private String ciudad;
     private double longitud;
     private double latitud;
 
     public Ubicacion() {}
 
-    public Ubicacion(String nombreCalle, String ciudad, double longitud, double latitud) {
+    public Ubicacion(String nombreCalle, String numero, String ciudad, double longitud, double latitud) {
         this.nombreCalle = nombreCalle;
+        this.numero = numero;
         this.ciudad = ciudad;
         this.longitud = longitud;
         this.latitud = latitud;
@@ -38,6 +40,14 @@ public class Ubicacion {
 
     public void setNombreCalle(String nombreCalle) {
         this.nombreCalle = nombreCalle;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 
     public String getCiudad() {

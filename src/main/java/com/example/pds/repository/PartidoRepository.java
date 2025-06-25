@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface PartidoRepository extends JpaRepository<Partido, Long> {
     List<Partido> findByUbicacion(Ubicacion ubicacion);
+    List<Partido> findByUbicacion_NombreCalleAndUbicacion_Numero(String nombreCalle, String numero);
 } 

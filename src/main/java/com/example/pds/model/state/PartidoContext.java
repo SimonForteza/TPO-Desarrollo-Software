@@ -12,6 +12,10 @@ public class PartidoContext {
         this.estadoActual = EstadoFactory.crearEstado(partido.getEstado());
     }
 
+    public void alcanzarNumeroRequerido() {
+        estadoActual.alcanzarNumeroRequerido(this);
+    }
+
     public void confirmar() {
         estadoActual.confirmar(this);
     }
