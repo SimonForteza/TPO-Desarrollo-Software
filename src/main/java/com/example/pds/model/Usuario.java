@@ -31,4 +31,8 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private java.util.List<UsuarioPartido> partidosInscriptos = new java.util.ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "ubicacion_id")
+    private Ubicacion ubicacion;
 }

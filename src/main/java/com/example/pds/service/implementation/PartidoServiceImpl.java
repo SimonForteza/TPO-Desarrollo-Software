@@ -18,6 +18,8 @@ import com.example.pds.repository.DeporteRepository;
 import com.example.pds.repository.UbicacionRepository;
 import com.example.pds.repository.UsuarioRepository;
 import com.example.pds.service.UsuarioPartidoService;
+import com.example.pds.dto.UbicacionDTO;
+import com.example.pds.util.GeocodingUtil;
 
 @Service
 public class PartidoServiceImpl implements PartidoService {
@@ -37,8 +39,27 @@ public class PartidoServiceImpl implements PartidoService {
         Deporte deporte = deporteRepository.findByNombre(dto.nombreDeporte())
             .orElseThrow(() -> new RuntimeException("Deporte no encontrado"));
 
-        Ubicacion ubicacion = ubicacionRepository.findById(dto.ubicacionId())
-            .orElseThrow(() -> new RuntimeException("Ubicación no encontrada"));
+        // Crear y guardar Ubicacion
+        Ubicacion ubicacion = null;
+        UbicacionDTO ubicacionDTO = dto.ubicacion();
+        if (ubicacionDTO != null) {
+            double[] coords = GeocodingUtil.getLatLongFromAddress(
+                ubicacionDTO.nombreCalle(),
+                ubicacionDTO.numero(),
+                ubicacionDTO.ciudad()
+            );
+            double lat = coords != null ? coords[0] : 0.0;
+            double lon = coords != null ? coords[1] : 0.0;
+            ubicacion = new Ubicacion(
+                ubicacionDTO.nombreCalle(),
+                ubicacionDTO.numero(),
+                ubicacionDTO.ciudad(),
+                lon,
+                lat
+            );
+            ubicacion = ubicacionRepository.save(ubicacion);
+        }
+
         Usuario creador = usuarioRepository.findById(dto.creadorId())
             .orElseThrow(() -> new RuntimeException("Usuario creador no encontrado"));
         

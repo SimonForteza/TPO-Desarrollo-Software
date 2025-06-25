@@ -5,5 +5,6 @@ public record CrearUsuarioDTO(
     String email,
     String password,
     String deporteFavorito, // nombre del deporte
-    String nivelJuego       // String, puede ser null
+    String nivelJuego,      // String, puede ser null
+    UbicacionDTO ubicacion
 ) {} 

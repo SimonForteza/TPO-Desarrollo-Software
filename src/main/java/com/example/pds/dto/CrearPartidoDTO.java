@@ -7,7 +7,6 @@ public record CrearPartidoDTO(
     String nombreDeporte,
     LocalDate fecha,
     LocalTime hora,
-    // TODO: mejorar la validacion de la ubicacion
-    Long ubicacionId,
+    UbicacionDTO ubicacion,
     Long creadorId
 ) {} 

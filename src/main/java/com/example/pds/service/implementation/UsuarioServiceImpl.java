@@ -1,12 +1,16 @@
 package com.example.pds.service.implementation;
 
 import com.example.pds.dto.CrearUsuarioDTO;
+import com.example.pds.dto.UbicacionDTO;
 import com.example.pds.model.Deporte;
 import com.example.pds.model.NivelJuego;
 import com.example.pds.model.Usuario;
+import com.example.pds.model.Ubicacion;
 import com.example.pds.repository.DeporteRepository;
 import com.example.pds.repository.UsuarioRepository;
+import com.example.pds.repository.UbicacionRepository;
 import com.example.pds.service.UsuarioService;
+import com.example.pds.util.GeocodingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +22,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     private DeporteRepository deporteRepository;
+
+    @Autowired
+    private UbicacionRepository ubicacionRepository;
 
     @Override
     public Usuario crearUsuario(CrearUsuarioDTO dto) {
@@ -50,6 +57,28 @@ public class UsuarioServiceImpl implements UsuarioService {
             usuario.setNivelJuego(NivelJuego.nivelJuegofromString(dto.nivelJuego()));
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Nivel de juego inválido: " + dto.nivelJuego());
+        }
+
+        // Crear y guardar Ubicacion
+        Ubicacion ubicacion = null;
+        UbicacionDTO ubicacionDTO = dto.ubicacion();
+        if (ubicacionDTO != null) {
+            double[] coords = GeocodingUtil.getLatLongFromAddress(
+                ubicacionDTO.nombreCalle(),
+                ubicacionDTO.numero(),
+                ubicacionDTO.ciudad()
+            );
+            double lat = coords != null ? coords[0] : 0.0;
+            double lon = coords != null ? coords[1] : 0.0;
+            ubicacion = new Ubicacion(
+                ubicacionDTO.nombreCalle(),
+                ubicacionDTO.numero(),
+                ubicacionDTO.ciudad(),
+                lon,
+                lat
+            );
+            ubicacion = ubicacionRepository.save(ubicacion);
+            usuario.setUbicacion(ubicacion);
         }
 
         return usuarioRepository.save(usuario);
