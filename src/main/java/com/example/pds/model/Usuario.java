@@ -1,5 +1,7 @@
 package com.example.pds.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,5 +28,7 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private NivelJuego nivelJuego;    // Opcional
 
-    
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private java.util.List<UsuarioPartido> partidosInscriptos = new java.util.ArrayList<>();
 }

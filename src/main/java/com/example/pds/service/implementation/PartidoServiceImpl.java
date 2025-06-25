@@ -11,38 +11,66 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.example.pds.dto.CrearPartidoDTO;
+import com.example.pds.model.Deporte;
+import com.example.pds.model.Usuario;
+import com.example.pds.repository.DeporteRepository;
+import com.example.pds.repository.UbicacionRepository;
+import com.example.pds.repository.UsuarioRepository;
+import com.example.pds.service.UsuarioPartidoService;
+
 @Service
 public class PartidoServiceImpl implements PartidoService {
 
     @Autowired
     private PartidoRepository partidoRepository;
+    @Autowired
+    private DeporteRepository deporteRepository;
+    @Autowired
+    private UbicacionRepository ubicacionRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    @Autowired
+    private UsuarioPartidoService usuarioPartidoService;
 
-    public Partido crearPartido(Partido partido) {
-        // Calculo del horario de finalizacion del partido
+    public Partido crearPartido(CrearPartidoDTO dto) {
+        Deporte deporte = deporteRepository.findByNombre(dto.nombreDeporte())
+            .orElseThrow(() -> new RuntimeException("Deporte no encontrado"));
+
+        Ubicacion ubicacion = ubicacionRepository.findById(dto.ubicacionId())
+            .orElseThrow(() -> new RuntimeException("Ubicación no encontrada"));
+        Usuario creador = usuarioRepository.findById(dto.creadorId())
+            .orElseThrow(() -> new RuntimeException("Usuario creador no encontrado"));
+        
+        // Combinar fecha y hora en LocalDateTime
+        java.time.LocalDateTime fechaHora = java.time.LocalDateTime.of(dto.fecha(), dto.hora());
+
+        Partido partido = new Partido();
+        partido.setDeporte(deporte);
+        partido.setFechaHora(fechaHora);
+        partido.setUbicacion(ubicacion);
+        partido.setCreador(creador);
+        partido.setEstado(EstadoPartido.NECESITAMOS_JUGADORES);
+
+        // Validación de superposición de horarios
         LocalDateTime inicio = partido.getFechaHora();
         int duracion = partido.obtenerDuracion();
         LocalDateTime fin = inicio.plusMinutes(duracion);
-        // obtener la ubicacion del partido
-        Ubicacion ubicacion = partido.getUbicacion();
-
-        // Busca los partidos de esa ubicacion (por nombre de calle y número)
         List<Partido> partidosEnUbicacion = partidoRepository.findByUbicacion_NombreCalleAndUbicacion_Numero(
             ubicacion.getNombreCalle(), ubicacion.getNumero()
         );
-        // Verificar si hay superposicion de horarios
         for (Partido p : partidosEnUbicacion) {
             LocalDateTime inicioExistente = p.getFechaHora();
             int duracionExistente = p.obtenerDuracion();
             LocalDateTime finExistente = inicioExistente.plusMinutes(duracionExistente);
-            // Verificar superposición
             if (inicio.isBefore(finExistente) && fin.isAfter(inicioExistente)) {
                 throw new RuntimeException("Ya existe un partido en esa ubicación y horario.");
             }
         }
-
-        partido.setEstado(EstadoPartido.NECESITAMOS_JUGADORES);
-        return partidoRepository.save(partido);
+        Partido partidoGuardado = partidoRepository.save(partido);
+        usuarioPartidoService.inscribirUsuarioAPartido(creador, partidoGuardado);
+        return partidoGuardado;
     }
 
-    
+
 } 
