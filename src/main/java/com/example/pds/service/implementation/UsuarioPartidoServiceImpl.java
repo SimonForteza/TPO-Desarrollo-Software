@@ -51,7 +51,16 @@ public class UsuarioPartidoServiceImpl implements UsuarioPartidoService {
         usuarioPartido.setUsuario(usuario);
         usuarioPartido.setPartido(partido);
         usuarioPartido.setConfirmado(false); // Por defecto no confirmado
-        return usuarioPartidoRepository.save(usuarioPartido);
+        usuarioPartido = usuarioPartidoRepository.save(usuarioPartido);
+
+        // Actualizar estado del partido usando el patrón State
+        PartidoContext partidoContext = new PartidoContext(partido);
+        partidoContext.alcanzarNumeroRequerido();
+        
+        // Guardar el partido con el estado actualizado
+        partidoRepository.save(partido);
+        
+        return usuarioPartido;
     }
 
     @Override
