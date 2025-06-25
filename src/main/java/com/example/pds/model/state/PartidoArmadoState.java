@@ -10,7 +10,12 @@ public class PartidoArmadoState implements PartidoState{
 
     @Override
     public void confirmar(PartidoContext partidoContext) {
-        partidoContext.setEstado(new ConfirmadoState());
+        boolean todosAceptaron = partidoContext.getPartido().getInscripciones().stream()
+        .allMatch(j -> j.isConfirmado());
+        
+        if (todosAceptaron) {
+            partidoContext.setEstado(new ConfirmadoState());
+        }
     }
 
     @Override

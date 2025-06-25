@@ -90,7 +90,7 @@ public class PartidoServiceImpl implements PartidoService {
             }
         }
         Partido partidoGuardado = partidoRepository.save(partido);
-        usuarioPartidoService.inscribirUsuarioAPartido(creador, partidoGuardado);
+        usuarioPartidoService.inscribirUsuarioAPartido(creador.getId(), partidoGuardado.getId());
         return partidoGuardado;
     }
 

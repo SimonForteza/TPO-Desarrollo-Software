@@ -27,5 +27,8 @@ public class UsuarioPartido {
     @JsonBackReference
     private Partido partido;
 
+    @Column(nullable = false)
+    private boolean confirmado; // Indica si el usuario confirmó su participación
+
     // Puedes agregar más campos si lo necesitas, como fecha de inscripción, estado, etc.
 } 

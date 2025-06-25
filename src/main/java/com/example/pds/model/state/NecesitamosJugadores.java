@@ -6,7 +6,9 @@ public class NecesitamosJugadores implements PartidoState {
 
     @Override
     public void alcanzarNumeroRequerido(PartidoContext partidoContext) {
-        partidoContext.setEstado(new PartidoArmadoState());
+        if (partidoContext.getPartido().obtenerCantidadInscriptos() >= partidoContext.getPartido().obtenerCantidadJugadores()) {
+            partidoContext.setEstado(new PartidoArmadoState());
+        }
     }
 
     @Override

@@ -54,6 +54,10 @@ public class Partido {
         return Math.max(0, cantidadNecesaria - inscriptos);
     }
 
+    public int obtenerCantidadInscriptos(){
+        return inscripciones.size();
+    }
+
     public int obtenerDuracion(){
         return deporte.getMinutosJuego();
     }
