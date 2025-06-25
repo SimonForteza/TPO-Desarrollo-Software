@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.pds.model.Deporte;
 import com.example.pds.repository.DeporteRepository;
+import java.util.List;
+import java.text.Normalizer;
 
 @Service
 public class DeporteServiceImpl implements DeporteService {
@@ -19,6 +21,30 @@ public class DeporteServiceImpl implements DeporteService {
 
     // Methods
     public Deporte crearDeporte(Deporte deporte){
+        // Normalizar el nombre: quitar tildes y pasar a minúsculas
+        String nombreNormalizado = Normalizer.normalize(deporte.getNombre(), Normalizer.Form.NFD)
+            .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+            .toLowerCase();
+        // Chequear si ya existe (en Java)
+        boolean existe = deporteRepository.findAll().stream()
+            .map(d -> Normalizer.normalize(d.getNombre(), Normalizer.Form.NFD)
+                .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+                .toLowerCase())
+            .anyMatch(n -> n.equals(nombreNormalizado));
+        if (existe) {
+            throw new RuntimeException("Ya existe un deporte con ese nombre.");
+        }
+        deporte.setNombre(nombreNormalizado);
         return deporteRepository.save(deporte);
+    }
+
+    @Override
+    public List<Deporte> obtenerTodosLosDeportes() {
+        return deporteRepository.findAll();
+    }
+
+    @Override
+    public void eliminarDeportePorId(Long id) {
+        deporteRepository.deleteById(id);
     }
 }
