@@ -1,8 +1,6 @@
 package com.example.pds.service;
 
-import java.util.List;
-
-import com.example.pds.model.Partido;
+import com.example.pds.model.entity.Partido;
 import com.example.pds.dto.CrearPartidoDTO;
 
 public interface PartidoService {

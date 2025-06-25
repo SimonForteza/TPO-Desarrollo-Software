@@ -1,5 +1,6 @@
-package com.example.pds.model;
+package com.example.pds.model.entity;
 
+import com.example.pds.model.state.EstadoPartido;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,7 +1,5 @@
 package com.example.pds.model.state;
 
-import com.example.pds.model.EstadoPartido;
-
 public interface PartidoState {
     void alcanzarNumeroRequerido(PartidoContext partidoContext);
     void confirmar(PartidoContext partidoContext);

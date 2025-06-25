@@ -1,7 +1,7 @@
 package com.example.pds.controller;
 
 import com.example.pds.dto.CrearUsuarioDTO;
-import com.example.pds.model.Usuario;
+import com.example.pds.model.entity.Usuario;
 import com.example.pds.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

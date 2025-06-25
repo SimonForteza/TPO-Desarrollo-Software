@@ -1,7 +1,5 @@
 package com.example.pds.model.state;
 
-import com.example.pds.model.EstadoPartido;
-
 public class FinalizadoState implements PartidoState{
     @Override
     public void alcanzarNumeroRequerido(PartidoContext partidoContext) {

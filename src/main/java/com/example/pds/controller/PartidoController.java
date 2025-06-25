@@ -8,11 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.pds.model.Partido;
+import com.example.pds.model.entity.Partido;
 import com.example.pds.service.PartidoService;
 import com.example.pds.dto.CrearPartidoDTO;
-import com.example.pds.model.Usuario;
-import com.example.pds.model.UsuarioPartido;
+import com.example.pds.model.entity.UsuarioPartido;
 import com.example.pds.service.UsuarioService;
 import com.example.pds.service.UsuarioPartidoService;
 

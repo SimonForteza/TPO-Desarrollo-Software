@@ -2,10 +2,10 @@ package com.example.pds.service.implementation;
 
 import com.example.pds.dto.CrearUsuarioDTO;
 import com.example.pds.dto.UbicacionDTO;
-import com.example.pds.model.Deporte;
-import com.example.pds.model.NivelJuego;
-import com.example.pds.model.Usuario;
-import com.example.pds.model.Ubicacion;
+import com.example.pds.model.entity.Deporte;
+import com.example.pds.model.entity.NivelJuego;
+import com.example.pds.model.entity.Usuario;
+import com.example.pds.model.entity.Ubicacion;
 import com.example.pds.repository.DeporteRepository;
 import com.example.pds.repository.UsuarioRepository;
 import com.example.pds.repository.UbicacionRepository;

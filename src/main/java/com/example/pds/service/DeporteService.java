@@ -1,7 +1,7 @@
 package com.example.pds.service;
 
-import com.example.pds.model.Deporte;
-import com.example.pds.repository.DeporteRepository;
+import com.example.pds.model.entity.Deporte;
+
 import java.util.List;
 
 public interface DeporteService {

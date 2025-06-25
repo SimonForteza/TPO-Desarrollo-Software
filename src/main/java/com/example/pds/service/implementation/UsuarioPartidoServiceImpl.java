@@ -1,15 +1,15 @@
 package com.example.pds.service.implementation;
 
-import com.example.pds.model.Partido;
-import com.example.pds.model.Usuario;
-import com.example.pds.model.UsuarioPartido;
+import com.example.pds.model.entity.Partido;
+import com.example.pds.model.entity.Usuario;
+import com.example.pds.model.entity.UsuarioPartido;
 import com.example.pds.model.state.PartidoContext;
 import com.example.pds.repository.UsuarioPartidoRepository;
 import com.example.pds.service.UsuarioPartidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
-import com.example.pds.model.EstadoPartido;
+import com.example.pds.model.state.EstadoPartido;
 import com.example.pds.repository.UsuarioRepository;
 import com.example.pds.repository.PartidoRepository;
 

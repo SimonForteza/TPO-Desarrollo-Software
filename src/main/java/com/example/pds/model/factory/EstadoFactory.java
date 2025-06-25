@@ -1,6 +1,6 @@
 package com.example.pds.model.factory;
 
-import com.example.pds.model.EstadoPartido;
+import com.example.pds.model.state.EstadoPartido;
 import com.example.pds.model.state.NecesitamosJugadores;
 import com.example.pds.model.state.PartidoArmadoState;
 import com.example.pds.model.state.ConfirmadoState;

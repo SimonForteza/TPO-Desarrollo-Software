@@ -1,8 +1,8 @@
 package com.example.pds.service.implementation;
 
-import com.example.pds.model.EstadoPartido;
-import com.example.pds.model.Partido;
-import com.example.pds.model.Ubicacion;
+import com.example.pds.model.state.EstadoPartido;
+import com.example.pds.model.entity.Partido;
+import com.example.pds.model.entity.Ubicacion;
 import com.example.pds.model.state.PartidoContext;
 import com.example.pds.repository.PartidoRepository;
 import com.example.pds.service.PartidoService;
@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.example.pds.dto.CrearPartidoDTO;
-import com.example.pds.model.Deporte;
-import com.example.pds.model.Usuario;
+import com.example.pds.model.entity.Deporte;
+import com.example.pds.model.entity.Usuario;
 import com.example.pds.repository.DeporteRepository;
 import com.example.pds.repository.UbicacionRepository;
 import com.example.pds.repository.UsuarioRepository;

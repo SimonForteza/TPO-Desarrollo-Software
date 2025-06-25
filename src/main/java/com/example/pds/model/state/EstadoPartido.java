@@ -1,4 +1,4 @@
-package com.example.pds.model;
+package com.example.pds.model.state;
 
 public enum EstadoPartido {
     NECESITAMOS_JUGADORES,

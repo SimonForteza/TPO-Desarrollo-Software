@@ -4,7 +4,7 @@ import com.example.pds.service.DeporteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.pds.model.Deporte;
+import com.example.pds.model.entity.Deporte;
 import com.example.pds.repository.DeporteRepository;
 import java.util.List;
 import java.text.Normalizer;

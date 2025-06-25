@@ -1,4 +1,4 @@
-package com.example.pds.model;
+package com.example.pds.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
