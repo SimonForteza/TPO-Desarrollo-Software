@@ -110,13 +110,21 @@ public class PartidoServiceImpl implements PartidoService {
     }
 
     @Override
-    public Partido cancelarPartido(Long idPartido) {
+    public Partido cancelarPartido(Long idPartido, Long idUsuario) {
         if (idPartido == null) {
             throw new IllegalArgumentException("El ID del partido no puede ser nulo");
+        }
+        if (idUsuario == null) {
+            throw new IllegalArgumentException("El ID del usuario no puede ser nulo");
         }
 
         Partido partido = partidoRepository.findById(idPartido)
                 .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
+
+        // Verificar si el usuario es el creador
+        if (partido.getCreador() == null || !partido.getCreador().getId().equals(idUsuario)) {
+            throw new IllegalArgumentException("Solo el creador del partido puede cancelarlo");
+        }
 
         PartidoContext context = new PartidoContext(partido);
         context.cancelar();
