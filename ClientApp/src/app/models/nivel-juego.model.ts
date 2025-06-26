@@ -1,0 +1,6 @@
+export enum NivelJuego {
+    PRINCIPIANTE = 'PRINCIPIANTE',
+    INTERMEDIO = 'INTERMEDIO',
+    AVANZADO = 'AVANZADO',
+    PROFESIONAL = 'PROFESIONAL'
+  }

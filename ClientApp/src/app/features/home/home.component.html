@@ -1,0 +1,80 @@
+<div class="home-container">
+    <!-- Header -->
+    <header class="header">
+      <h1>UNO MAS - Dashboard</h1>
+      <div class="user-info">
+        <div class="notification-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 8C18 6.4087 17.3679 4.88258 16.2426 3.75736C15.1174 2.63214 13.5913 2 12 2C10.4087 2 8.88258 2.63214 7.75736 3.75736C6.63214 4.88258 6 6.4087 6 8C6 15 3 17 3 17H21C21 17 18 15 18 8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </header>
+  
+    <!-- Stats Section -->
+    <div class="stats-section">
+      <h2>Resumen del Sistema</h2>
+      <div class="stats-list">
+        <div class="stat-item">
+          <span class="stat-label">Usuarios creados:</span>
+          <span class="stat-value">24</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Deportes creados:</span>
+          <span class="stat-value">8</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Partidos creados:</span>
+          <span class="stat-value">12</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Partidos activos:</span>
+          <span class="stat-value">5</span>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Action Buttons -->
+    <div class="action-section">
+      <h2>Acciones Principales</h2>
+      <div class="action-buttons">
+        <button class="action-btn primary" (click)="navigateToCreateUser()">
+          <h3>Crear Usuario</h3>
+          <p>Registra nuevos jugadores en el sistema</p>
+        </button>
+  
+        <button class="action-btn secondary" (click)="navigateToCreateSport()">
+          <h3>Crear Deporte</h3>
+          <p>Añade nuevas disciplinas deportivas</p>
+        </button>
+  
+        <button class="action-btn tertiary" (click)="navigateToCreateMatch()">
+          <h3>Crear Partido</h3>
+          <p>Organiza nuevos encuentros deportivos</p>
+        </button>
+      </div>
+    </div>
+  
+    <!-- Recent Activity -->
+    <div class="recent-activity">
+      <h2>Actividad Reciente</h2>
+      <div class="activity-list">
+        <div class="activity-item">
+          <span class="activity-text">Nuevo usuario registrado: Juan Pérez</span>
+          <span class="activity-time">Hace 2 horas</span>
+        </div>
+        <div class="activity-item">
+          <span class="activity-text">Partido creado: Fútbol 5 - Cancha Norte</span>
+          <span class="activity-time">Hace 4 horas</span>
+        </div>
+        <div class="activity-item">
+          <span class="activity-text">Nuevo deporte añadido: Básquet</span>
+          <span class="activity-time">Ayer</span>
+        </div>
+        <div class="activity-item">
+          <span class="activity-text">Usuario María García se unió al partido de Tenis</span>
+          <span class="activity-time">Hace 2 días</span>
+        </div>
+      </div>
+    </div>
+  </div>
