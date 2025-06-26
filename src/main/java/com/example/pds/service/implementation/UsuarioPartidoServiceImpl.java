@@ -37,7 +37,7 @@ public class UsuarioPartidoServiceImpl implements UsuarioPartidoService {
             throw new IllegalArgumentException("El usuario ya está inscripto en este partido.");
         }
         // Validar estado del partido
-        if (partido.getEstado() != EstadoPartido.NECESITAMOS_JUGADORES && partido.getEstado() != EstadoPartido.PARTIDO_ARMADO) {
+        if (partido.getEstado() != EstadoPartido.NECESITAMOS_JUGADORES) {
             throw new IllegalArgumentException("No se puede inscribir a este partido en el estado actual: " + partido.getEstado());
         }
         // Validar cupo
