@@ -6,7 +6,7 @@ import { CommonModule } from "@angular/common"
 @Component({
   selector: "app-register-form",
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule], // Agregado ReactiveFormsModule
+  imports: [CommonModule, ReactiveFormsModule], 
   templateUrl: "./register-form.component.html",
   styleUrls: ["./register-form.component.css"],
 })
@@ -112,17 +112,16 @@ export class RegisterFormComponent implements OnInit {
     try {
       const formData = this.registerForm.value
 
-      // Si nivelJuego está vacío, lo convertimos a null
+
       if (!formData.nivelJuego) {
         formData.nivelJuego = null
       }
 
       const usuarioData: Usuario = formData
 
-      // Aquí harías la llamada a tu servicio/API
       console.log("Datos del usuario:", usuarioData)
 
-      // Simular llamada a API
+
       await new Promise((resolve) => setTimeout(resolve, 1000))
 
       alert("Usuario registrado exitosamente!")

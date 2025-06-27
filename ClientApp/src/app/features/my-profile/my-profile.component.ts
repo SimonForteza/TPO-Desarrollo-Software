@@ -16,7 +16,7 @@ export class MiPerfilComponent implements OnInit {
   isEditMode = false;
   isLoading = false;
 
-  // Datos de ejemplo - reemplazar con datos reales del backend
+ 
   recentMatches = [
     {
       nombre: 'Fútbol 5 - Liga Amateur',
@@ -82,13 +82,13 @@ export class MiPerfilComponent implements OnInit {
   toggleEditMode(): void {
     this.isEditMode = !this.isEditMode;
     if (this.isEditMode) {
-      this.initForm(); // Reinicializar el formulario con los datos actuales
+      this.initForm(); 
     }
   }
 
   cancelEdit(): void {
     this.isEditMode = false;
-    this.initForm(); // Restaurar los valores originales
+    this.initForm();
   }
 
   onSaveProfile(): void {

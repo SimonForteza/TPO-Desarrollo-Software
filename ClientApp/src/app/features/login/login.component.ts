@@ -55,10 +55,10 @@ export class LoginComponent implements OnInit {
           this.isLoading = false;
           this.successMessage = 'Inicio de sesión exitoso';
           
-          // Guardar datos del usuario en localStorage o sessionStorage
+
           localStorage.setItem('currentUser', JSON.stringify(response));
           
-          // Redirigir al dashboard después de un breve delay
+
           setTimeout(() => {
             this.router.navigate(['/']);
           }, 1500);

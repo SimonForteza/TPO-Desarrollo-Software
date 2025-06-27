@@ -17,7 +17,7 @@ export interface LoginResponse {
   apellido: string;
   email: string;
   telefono: string;
-  // Agregar otros campos que devuelva tu backend
+
 }
 @Injectable({
   providedIn: 'root'
@@ -71,18 +71,18 @@ login(loginData: LoginRequest): Observable<LoginResponse> {
   return this.http.post<LoginResponse>(`${this.apiUrl}/login`, loginData, { headers });
 }
 
-// Método para obtener usuario actual
+
 getCurrentUser(): any {
   const userStr = localStorage.getItem('currentUser');
   return userStr ? JSON.parse(userStr) : null;
 }
 
-// Método para logout
+
 logout(): void {
   localStorage.removeItem('currentUser');
 }
 
-// Método para verificar si está logueado
+
 isLoggedIn(): boolean {
   return this.getCurrentUser() !== null;
 }

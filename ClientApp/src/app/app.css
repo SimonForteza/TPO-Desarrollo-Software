@@ -10,14 +10,14 @@
     min-height: 100vh;
   }
   
-  /* Responsive */
+
   @media (max-width: 768px) {
     .main-content {
       margin-left: 0;
     }
   }
   
-  /* Global styles */
+ 
   * {
     margin: 0;
     padding: 0;

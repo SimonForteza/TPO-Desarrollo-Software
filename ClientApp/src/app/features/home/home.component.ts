@@ -1,30 +1,41 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { CommonModule } from "@angular/common"
+import { Component } from "@angular/core"
+import { Router } from "@angular/router"
+import { NotificationsComponent } from "../notifications/notifications.component"
 
 @Component({
-  selector: 'app-home',
+  selector: "app-home",
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  imports: [CommonModule, NotificationsComponent],
+  templateUrl: "./home.component.html",
+  styleUrl: "./home.component.css",
 })
 export class HomeComponent {
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   navigateToLogin() {
-    this.router.navigate(['/login']);
+    console.log("Navegando a login...") 
+    this.router.navigate(["/login"])
   }
 
   navigateToCreateUser() {
-    this.router.navigate(['/create-user']);
+    console.log("Navegando a crear usuario...") 
+    this.router.navigate(["/create-user"])
   }
 
   navigateToCreateSport() {
-    this.router.navigate(['/create-sport']);
+    console.log("Navegando a crear deporte...") 
+    this.router.navigate(["/"])
   }
 
   navigateToCreateMatch() {
-    this.router.navigate(['/create-match']);
+    console.log("Navegando a crear partido...") 
+    this.router.navigate(["/crear-partido"])
+  }
+
+
+  navigateToBuscarPartido() {
+    console.log("Navegando a buscar partido...")
+    this.router.navigate(["/buscar-partido"])
   }
 }

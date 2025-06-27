@@ -159,7 +159,7 @@
   cursor: not-allowed;
 }
 
-/* Iconos simples con CSS */
+
 .icon-user::before {
   content: "👤";
 }
