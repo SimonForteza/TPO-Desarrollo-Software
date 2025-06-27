@@ -6,10 +6,11 @@ import com.example.pds.model.entity.UsuarioPartido;
 import com.example.pds.model.state.PartidoContext;
 import com.example.pds.repository.UsuarioPartidoRepository;
 import com.example.pds.service.UsuarioPartidoService;
+import com.example.pds.notification.NotificationService;
+import com.example.pds.model.state.EstadoPartido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
-import com.example.pds.model.state.EstadoPartido;
 import com.example.pds.repository.UsuarioRepository;
 import com.example.pds.repository.PartidoRepository;
 
@@ -22,6 +23,8 @@ public class UsuarioPartidoServiceImpl implements UsuarioPartidoService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private PartidoRepository partidoRepository;
+    @Autowired
+    private NotificationService notificationService;
 
     @Override
     public UsuarioPartido inscribirUsuarioAPartido(Long idUsuario, Long idPartido) {
@@ -54,11 +57,18 @@ public class UsuarioPartidoServiceImpl implements UsuarioPartidoService {
         usuarioPartido = usuarioPartidoRepository.save(usuarioPartido);
 
         // Actualizar estado del partido usando el patrón State
+        EstadoPartido estadoAnterior = partido.getEstado();
         PartidoContext partidoContext = new PartidoContext(partido);
         partidoContext.alcanzarNumeroRequerido();
         
         // Guardar el partido con el estado actualizado
-        partidoRepository.save(partido);
+        Partido partidoActualizado = partidoRepository.save(partido);
+        
+        // Notificar si el partido se armó
+        if (estadoAnterior == EstadoPartido.NECESITAMOS_JUGADORES && 
+            partidoActualizado.getEstado() == EstadoPartido.PARTIDO_ARMADO) {
+            notificationService.notifyPartidoArmado(partidoActualizado);
+        }
         
         return usuarioPartido;
     }
@@ -79,6 +89,7 @@ public class UsuarioPartidoServiceImpl implements UsuarioPartidoService {
         usuarioPartido = usuarioPartidoRepository.save(usuarioPartido);
 
         // Actualizar estado del partido usando el contexto
+        EstadoPartido estadoAnterior = partido.getEstado();
         PartidoContext context = new PartidoContext(partido);
         
         // Si está en NECESITAMOS_JUGADORES, verificar si se alcanzó el número requerido
@@ -92,7 +103,13 @@ public class UsuarioPartidoServiceImpl implements UsuarioPartidoService {
         }
         
         // Guardar el partido con el estado actualizado
-        partidoRepository.save(context.getPartido());
+        Partido partidoActualizado = partidoRepository.save(context.getPartido());
+        
+        // Notificar si el partido se confirmó
+        if (estadoAnterior == EstadoPartido.PARTIDO_ARMADO && 
+            partidoActualizado.getEstado() == EstadoPartido.CONFIRMADO) {
+            notificationService.notifyPartidoConfirmado(partidoActualizado);
+        }
         
         return usuarioPartido;
     }

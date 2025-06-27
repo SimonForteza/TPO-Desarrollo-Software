@@ -6,6 +6,7 @@ import com.example.pds.model.entity.Ubicacion;
 import com.example.pds.model.state.PartidoContext;
 import com.example.pds.repository.PartidoRepository;
 import com.example.pds.service.PartidoService;
+import com.example.pds.notification.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,8 @@ public class PartidoServiceImpl implements PartidoService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private UsuarioPartidoService usuarioPartidoService;
+    @Autowired
+    private NotificationService notificationService;
 
     public Partido crearPartido(CrearPartidoDTO dto) {
         Deporte deporte = deporteRepository.findByNombre(dto.nombreDeporte())
@@ -91,6 +94,10 @@ public class PartidoServiceImpl implements PartidoService {
         }
         Partido partidoGuardado = partidoRepository.save(partido);
         usuarioPartidoService.inscribirUsuarioAPartido(creador.getId(), partidoGuardado.getId());
+        
+        // Notificar sobre nuevo partido
+        notificationService.notifyNewPartido(partidoGuardado);
+        
         return partidoGuardado;
     }
 
@@ -103,10 +110,16 @@ public class PartidoServiceImpl implements PartidoService {
         Partido partido = partidoRepository.findById(idPartido)
             .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
 
+        EstadoPartido estadoAnterior = partido.getEstado();
         PartidoContext context = new PartidoContext(partido);
         context.finalizar();
+        
+        Partido partidoActualizado = partidoRepository.save(context.getPartido());
+        
+        // Notificar cambio de estado
+        notificationService.notifyEstadoChanged(partidoActualizado, estadoAnterior);
 
-        return partidoRepository.save(context.getPartido());
+        return partidoActualizado;
     }
 
     @Override
@@ -126,10 +139,16 @@ public class PartidoServiceImpl implements PartidoService {
             throw new IllegalArgumentException("Solo el creador del partido puede cancelarlo");
         }
 
+        EstadoPartido estadoAnterior = partido.getEstado();
         PartidoContext context = new PartidoContext(partido);
         context.cancelar();
+        
+        Partido partidoActualizado = partidoRepository.save(context.getPartido());
+        
+        // Notificar cambio de estado
+        notificationService.notifyEstadoChanged(partidoActualizado, estadoAnterior);
 
-        return partidoRepository.save(context.getPartido());
+        return partidoActualizado;
     }
 
 
