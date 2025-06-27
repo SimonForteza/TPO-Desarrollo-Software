@@ -8,14 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import com.example.pds.model.entity.Partido;
 import com.example.pds.service.PartidoService;
 import com.example.pds.dto.CrearPartidoDTO;
 import com.example.pds.model.entity.UsuarioPartido;
-import com.example.pds.service.UsuarioService;
 import com.example.pds.service.UsuarioPartidoService;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -25,13 +23,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PartidoController {
 
     private final PartidoService partidoService;
-    private final UsuarioService usuarioService;
     private final UsuarioPartidoService usuarioPartidoService;
 
     @Autowired
-    public PartidoController(PartidoService partidoService, UsuarioService usuarioService, UsuarioPartidoService usuarioPartidoService) {
+    public PartidoController(PartidoService partidoService, UsuarioPartidoService usuarioPartidoService) {
         this.partidoService = partidoService;
-        this.usuarioService = usuarioService;
         this.usuarioPartidoService = usuarioPartidoService;
     }
 
