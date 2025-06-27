@@ -132,5 +132,9 @@ public class PartidoServiceImpl implements PartidoService {
         return partidoRepository.save(context.getPartido());
     }
 
+    @Override
+    public List<Partido> obtenerTodosLosPartidos() {
+        return partidoRepository.findAll();
+    }
 
 } 
