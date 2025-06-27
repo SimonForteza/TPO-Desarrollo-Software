@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.pds.model.entity.Deporte;
-import com.example.pds.service.implementation.DeporteServiceImpl;
+import com.example.pds.service.DeporteService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,10 +20,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 @RequestMapping("/deportes")
 public class DeporteController {
 
-    private DeporteServiceImpl deporteService;
+    private DeporteService deporteService;
 
     @Autowired
-    public DeporteController(DeporteServiceImpl deporteService) {
+    public DeporteController(DeporteService deporteService) {
         this.deporteService = deporteService;
     }
 
