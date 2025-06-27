@@ -1,0 +1,184 @@
+<div class="home-container">
+
+  <div class="welcome-section">
+    <div class="welcome-content">
+      <h1 class="welcome-title">Uno Mas</h1>
+      <p class="welcome-subtitle">Sistema de gestión deportiva</p>
+    </div>
+    <div class="welcome-actions">
+
+      <app-notifications [showAsButton]="true"></app-notifications>
+      
+      <button class="login-btn" (click)="navigateToLogin()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H15" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M10 17L15 12L10 7" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M15 12H3" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+        Iniciar Sesión
+      </button>
+      <button class="create-user-btn" (click)="navigateToCreateUser()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 21V19C16 17.9391 15.5786 16.9217 14.8284 16.1716C14.0783 15.4214 13.0609 15 12 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <circle cx="8.5" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+          <line x1="20" y1="8" x2="20" y2="14" stroke="currentColor" stroke-width="2"/>
+          <line x1="17" y1="11" x2="23" y2="11" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        Crear Usuario
+      </button>
+    </div>
+  </div>
+  
+
+  <div class="stats-section">
+    <h2>Resumen del Sistema</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon users">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3>24</h3>
+          <p>Usuarios Registrados</p>
+        </div>
+      </div>
+  
+      <div class="stat-card">
+        <div class="stat-icon sports">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3>8</h3>
+          <p>Deportes Disponibles</p>
+        </div>
+      </div>
+  
+      <div class="stat-card">
+        <div class="stat-icon matches">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+            <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="2"/>
+            <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="2"/>
+            <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3>12</h3>
+          <p>Partidos Creados</p>
+        </div>
+      </div>
+  
+      <div class="stat-card">
+        <div class="stat-icon active">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 1V3M12 21V23M4.22 4.22L5.64 5.64M18.36 18.36L19.78 19.78M1 12H3M21 12H23M4.22 19.78L5.64 18.36M18.36 5.64L19.78 4.22" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="stat-content">
+          <h3>5</h3>
+          <p>Partidos Activos</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <div class="action-section">
+    <h2>Acciones Principales</h2>
+    <div class="action-buttons">
+      <button class="action-btn primary" (click)="navigateToCreateMatch()">
+        <div class="btn-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+            <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="2"/>
+            <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="2"/>
+            <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="btn-content">
+          <h3>Crear Partido</h3>
+          <p>Organiza nuevos encuentros deportivos</p>
+        </div>
+      </button>
+  
+      <button class="action-btn secondary" (click)="navigateToBuscarPartido()">
+        <div class="btn-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+            <path d="M21 21L16.65 16.65" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="btn-content">
+          <h3>Buscar Partido</h3>
+          <p>Encuentra partidos disponibles</p>
+        </div>
+      </button>
+  
+      <button class="action-btn tertiary" (click)="navigateToCreateSport()">
+        <div class="btn-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="btn-content">
+          <h3>Crear Deporte</h3>
+          <p>Añade nuevas disciplinas deportivas</p>
+        </div>
+      </button>
+    </div>
+  </div>
+  
+
+  <div class="recent-activity">
+    <h2>Actividad Reciente</h2>
+    <div class="activity-list">
+      <div class="activity-item">
+        <div class="activity-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+            <path d="M7 20.662V19C7 17.5 8 16 12 16S17 17.5 17 19V20.662" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="activity-content">
+          <span class="activity-text">Nuevo usuario registrado: Juan Pérez</span>
+          <span class="activity-time">Hace 2 horas</span>
+        </div>
+      </div>
+      <div class="activity-item">
+        <div class="activity-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" stroke="currentColor" stroke-width="2"/>
+            <line x1="16" y1="2" x2="16" y2="6" stroke="currentColor" stroke-width="2"/>
+            <line x1="8" y1="2" x2="8" y2="6" stroke="currentColor" stroke-width="2"/>
+            <line x1="3" y1="10" x2="21" y2="10" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="activity-content">
+          <span class="activity-text">Partido creado: Fútbol 5 - Cancha Norte</span>
+          <span class="activity-time">Hace 4 horas</span>
+        </div>
+      </div>
+      <div class="activity-item">
+        <div class="activity-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="activity-content">
+          <span class="activity-text">Nuevo deporte añadido: Básquet</span>
+          <span class="activity-time">Ayer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>

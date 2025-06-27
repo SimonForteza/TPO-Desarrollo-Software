@@ -1,0 +1,212 @@
+<div class="crear-partido-container">
+  <div class="page-header">
+    <div class="header-content">
+      <button class="back-btn" (click)="goBack()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+        Volver
+      </button>
+      <div class="header-info">
+        <h1>Crear Nuevo Partido</h1>
+        <p>Organiza un encuentro deportivo y encuentra jugadores</p>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="form-container">
+    <form [formGroup]="partidoForm" (ngSubmit)="onSubmit()" class="partido-form">
+      
+
+      <div class="form-section">
+        <h2>Información Básica</h2>
+        
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="tipoDeporte">Tipo de Deporte *</label>
+            <select
+              id="tipoDeporte"
+              formControlName="tipoDeporte"
+              class="form-control"
+              [class.error]="partidoForm.get('tipoDeporte')?.invalid && partidoForm.get('tipoDeporte')?.touched"
+            >
+              <option value="">Selecciona un deporte</option>
+              <option *ngFor="let deporte of deportesDisponibles" [value]="deporte">
+                {{ deporte }}
+              </option>
+            </select>
+            <div class="error-message" *ngIf="partidoForm.get('tipoDeporte')?.invalid && partidoForm.get('tipoDeporte')?.touched">
+              <span *ngIf="partidoForm.get('tipoDeporte')?.errors?.['required']">El tipo de deporte es requerido</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="cantidadJugadores">Cantidad de Jugadores *</label>
+            <input
+              type="number"
+              id="cantidadJugadores"
+              formControlName="cantidadJugadores"
+              class="form-control"
+              [class.error]="partidoForm.get('cantidadJugadores')?.invalid && partidoForm.get('cantidadJugadores')?.touched"
+              placeholder="Ej: 10"
+              min="2"
+              max="50"
+            >
+            <div class="error-message" *ngIf="partidoForm.get('cantidadJugadores')?.invalid && partidoForm.get('cantidadJugadores')?.touched">
+              <span *ngIf="partidoForm.get('cantidadJugadores')?.errors?.['required']">La cantidad de jugadores es requerida</span>
+              <span *ngIf="partidoForm.get('cantidadJugadores')?.errors?.['min']">Mínimo 2 jugadores</span>
+              <span *ngIf="partidoForm.get('cantidadJugadores')?.errors?.['max']">Máximo 50 jugadores</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="duracion">Duración (minutos) *</label>
+            <select
+              id="duracion"
+              formControlName="duracion"
+              class="form-control"
+              [class.error]="partidoForm.get('duracion')?.invalid && partidoForm.get('duracion')?.touched"
+            >
+              <option value="">Selecciona duración</option>
+              <option value="30">30 minutos</option>
+              <option value="45">45 minutos</option>
+              <option value="60">1 hora</option>
+              <option value="90">1 hora 30 minutos</option>
+              <option value="120">2 horas</option>
+              <option value="180">3 horas</option>
+            </select>
+            <div class="error-message" *ngIf="partidoForm.get('duracion')?.invalid && partidoForm.get('duracion')?.touched">
+              <span *ngIf="partidoForm.get('duracion')?.errors?.['required']">La duración es requerida</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="form-section">
+        <h2>Ubicación y Horario</h2>
+        
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <label for="ubicacion">Ubicación *</label>
+            <input
+              type="text"
+              id="ubicacion"
+              formControlName="ubicacion"
+              class="form-control"
+              [class.error]="partidoForm.get('ubicacion')?.invalid && partidoForm.get('ubicacion')?.touched"
+              placeholder="Ej: Cancha Norte, Polideportivo Central, etc."
+            >
+            <div class="error-message" *ngIf="partidoForm.get('ubicacion')?.invalid && partidoForm.get('ubicacion')?.touched">
+              <span *ngIf="partidoForm.get('ubicacion')?.errors?.['required']">La ubicación es requerida</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="fecha">Fecha *</label>
+            <input
+              type="date"
+              id="fecha"
+              formControlName="fecha"
+              class="form-control"
+              [class.error]="partidoForm.get('fecha')?.invalid && partidoForm.get('fecha')?.touched"
+              [min]="minDate"
+            >
+            <div class="error-message" *ngIf="partidoForm.get('fecha')?.invalid && partidoForm.get('fecha')?.touched">
+              <span *ngIf="partidoForm.get('fecha')?.errors?.['required']">La fecha es requerida</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="hora">Hora *</label>
+            <input
+              type="time"
+              id="hora"
+              formControlName="hora"
+              class="form-control"
+              [class.error]="partidoForm.get('hora')?.invalid && partidoForm.get('hora')?.touched"
+            >
+            <div class="error-message" *ngIf="partidoForm.get('hora')?.invalid && partidoForm.get('hora')?.touched">
+              <span *ngIf="partidoForm.get('hora')?.errors?.['required']">La hora es requerida</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="form-section">
+        <h2>Información Adicional</h2>
+        
+        <div class="form-group">
+          <label for="descripcion">Descripción (Opcional)</label>
+          <textarea
+            id="descripcion"
+            formControlName="descripcion"
+            class="form-control textarea"
+            placeholder="Agrega detalles adicionales sobre el partido, reglas especiales, nivel requerido, etc."
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+
+
+      <div class="estado-info">
+        <div class="info-card">
+          <div class="info-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 16V12" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="info-content">
+            <h3>Estado Inicial</h3>
+            <p>Tu partido comenzará en estado <strong>"Necesitamos jugadores"</strong> y otros usuarios podrán unirse hasta completar el cupo.</p>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="form-actions">
+        <button
+          type="button"
+          class="cancel-btn"
+          (click)="goBack()"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]="partidoForm.invalid || isLoading"
+        >
+          <span *ngIf="!isLoading">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+              <path d="M12 8V16" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M8 12H16" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            Crear Partido
+          </span>
+          <span *ngIf="isLoading" class="loading">
+            <svg class="spinner" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            Creando partido...
+          </span>
+        </button>
+      </div>
+
+
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="success-message" *ngIf="successMessage">
+        {{ successMessage }}
+      </div>
+    </form>
+  </div>
+</div>

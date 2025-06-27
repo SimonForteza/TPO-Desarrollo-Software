@@ -1,0 +1,78 @@
+<div class="buscar-partido-container">
+  <div class="page-header">
+    <div class="header-content">
+      <button class="back-btn" (click)="goBack()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19 12H5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+        Volver
+      </button>
+      <div class="header-info">
+        <h1>Buscar Partido</h1>
+        <p>Selecciona el tipo de búsqueda que deseas realizar</p>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="search-options-container">
+    <div class="search-options-grid">
+      
+
+      <div class="search-option-card" (click)="navigateToBuscarPorHistorial()">
+        <div class="option-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <polyline points="12,6 12,12 16,14" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="option-content">
+          <h3>Buscar por Historial</h3>
+          <p>Encuentra partidos basándote en tu historial de juegos anteriores</p>
+        </div>
+        <div class="option-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="search-option-card" (click)="navigateToBuscarPorCercania()">
+        <div class="option-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 10C21 17 12 23 12 23S3 17 3 10C3 5.02944 7.02944 1 12 1C16.9706 1 21 5.02944 21 10Z" stroke="currentColor" stroke-width="2"/>
+            <circle cx="12" cy="10" r="3" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="option-content">
+          <h3>Buscar por Cercanía</h3>
+          <p>Encuentra partidos cerca de tu ubicación actual</p>
+        </div>
+        <div class="option-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="search-option-card" (click)="navigateToBuscarPorNivel()">
+        <div class="option-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="13,2 3,14 12,14 11,22 21,10 12,10 13,2" stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="option-content">
+          <h3>Buscar por Nivel</h3>
+          <p>Encuentra partidos acordes a tu nivel de habilidad</p>
+        </div>
+        <div class="option-arrow">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
