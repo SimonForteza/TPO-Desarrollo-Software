@@ -46,6 +46,18 @@ public class Partido {
     @JsonManagedReference
     private java.util.List<UsuarioPartido> inscripciones = new java.util.ArrayList<>();
 
+    // Nuevo: configuración de niveles permitidos
+    @Column(name = "permitir_cualquier_nivel")
+    private boolean permitirCualquierNivel = true;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "nivel_minimo")
+    private NivelJuego nivelMinimo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "nivel_maximo")
+    private NivelJuego nivelMaximo;
+
     // Transient: no se guarda en la base de dato
     // Calcular la cantidad de jugadores restantes
     @Transient

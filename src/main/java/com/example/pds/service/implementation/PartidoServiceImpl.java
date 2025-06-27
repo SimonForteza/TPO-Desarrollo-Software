@@ -4,6 +4,7 @@ import com.example.pds.model.state.EstadoPartido;
 import com.example.pds.model.entity.Partido;
 import com.example.pds.model.entity.Ubicacion;
 import com.example.pds.model.state.PartidoContext;
+import com.example.pds.model.stategyEmparejamiento.EmparejamientoStrategy;
 import com.example.pds.repository.PartidoRepository;
 import com.example.pds.service.PartidoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import com.example.pds.dto.CrearPartidoDTO;
 import com.example.pds.model.entity.Deporte;
+import com.example.pds.model.entity.NivelJuego;
 import com.example.pds.model.entity.Usuario;
 import com.example.pds.repository.DeporteRepository;
 import com.example.pds.repository.UbicacionRepository;
@@ -21,6 +23,9 @@ import com.example.pds.repository.UsuarioRepository;
 import com.example.pds.service.UsuarioPartidoService;
 import com.example.pds.dto.UbicacionDTO;
 import com.example.pds.util.GeocodingUtil;
+import com.example.pds.model.stategyEmparejamiento.EmparejamientoContext;
+import com.example.pds.model.stategyEmparejamiento.TipoEmparejamiento;
+import com.example.pds.model.factory.EmparejamientoFactory;
 
 @Service
 public class PartidoServiceImpl implements PartidoService {
@@ -35,6 +40,9 @@ public class PartidoServiceImpl implements PartidoService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private UsuarioPartidoService usuarioPartidoService;
+
+    // estrategia de emparejamiento
+    private EmparejamientoStrategy estrategia;
 
     public Partido crearPartido(CrearPartidoDTO dto) {
         Deporte deporte = deporteRepository.findByNombre(dto.nombreDeporte())
@@ -73,6 +81,20 @@ public class PartidoServiceImpl implements PartidoService {
         partido.setUbicacion(ubicacion);
         partido.setCreador(creador);
         partido.setEstado(EstadoPartido.NECESITAMOS_JUGADORES);
+
+        // seteamos los niveles de juego si partido no es de cualquier nivel
+        partido.setPermitirCualquierNivel(dto.permitirCualquierNivel());
+        if (!dto.permitirCualquierNivel()) {
+            if (dto.nivelMinimo() != null && !dto.nivelMinimo().isBlank()) {
+                partido.setNivelMinimo(NivelJuego.nivelJuegofromString(dto.nivelMinimo()));
+            }
+            if (dto.nivelMaximo() != null && !dto.nivelMaximo().isBlank()) {
+                partido.setNivelMaximo(NivelJuego.nivelJuegofromString(dto.nivelMaximo()));
+            }
+        } else {
+            partido.setNivelMinimo(null);
+            partido.setNivelMaximo(null);
+        }
 
         // Validación de superposición de horarios
         LocalDateTime inicio = partido.getFechaHora();
@@ -135,6 +157,17 @@ public class PartidoServiceImpl implements PartidoService {
     @Override
     public List<Partido> obtenerTodosLosPartidos() {
         return partidoRepository.findAll();
+    }
+
+    @Override
+    public List<Partido> obtenerPartidosEmparejados(Long usuarioId, TipoEmparejamiento tipoEmparejamiento) {
+        Usuario usuario = usuarioRepository.findById(usuarioId)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        List<Partido> partidos = partidoRepository.findAll();
+
+        EmparejamientoContext contexto = new EmparejamientoContext();
+        contexto.setStrategy(EmparejamientoFactory.crearEstrategia(tipoEmparejamiento));
+        return contexto.emparejar(usuario, partidos);
     }
 
 } 

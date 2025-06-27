@@ -8,5 +8,8 @@ public record CrearPartidoDTO(
     LocalDate fecha,
     LocalTime hora,
     UbicacionDTO ubicacion,
-    Long creadorId
+    Long creadorId,
+    boolean permitirCualquierNivel,
+    String nivelMinimo,
+    String nivelMaximo
 ) {} 

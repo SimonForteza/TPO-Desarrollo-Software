@@ -16,6 +16,8 @@ import com.example.pds.dto.CrearPartidoDTO;
 import com.example.pds.model.entity.UsuarioPartido;
 import com.example.pds.service.UsuarioPartidoService;
 import org.springframework.web.bind.annotation.GetMapping;
+import com.example.pds.model.stategyEmparejamiento.TipoEmparejamiento;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -65,6 +67,14 @@ public class PartidoController {
     @GetMapping
     public ResponseEntity<List<Partido>> obtenerTodosLosPartidos() {
         List<Partido> partidos = partidoService.obtenerTodosLosPartidos();
+        return ResponseEntity.ok(partidos);
+    }
+
+    @GetMapping("/emparejados")
+    public ResponseEntity<List<Partido>> obtenerPartidosEmparejados(
+            @RequestParam Long usuarioId,
+            @RequestParam TipoEmparejamiento tipoEmparejamiento) {
+        List<Partido> partidos = partidoService.obtenerPartidosEmparejados(usuarioId, tipoEmparejamiento);
         return ResponseEntity.ok(partidos);
     }
     

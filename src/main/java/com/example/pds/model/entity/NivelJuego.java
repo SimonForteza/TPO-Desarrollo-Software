@@ -1,9 +1,19 @@
 package com.example.pds.model.entity;
 
 public enum NivelJuego {
-    PRINCIPIANTE,
-    INTERMEDIO,
-    PROFESIONAL;
+    PRINCIPIANTE(1),
+    INTERMEDIO(2),
+    PROFESIONAL(3);
+
+    private final int valor;
+
+    NivelJuego(int valor) {
+        this.valor = valor;
+    }
+
+    public int getValor() {
+        return valor;
+    }
 
     public static NivelJuego nivelJuegofromString(String nivel) {
         if (nivel == null) {
@@ -19,5 +29,14 @@ public enum NivelJuego {
             default:
                 throw new IllegalArgumentException("Nivel de juego desconocido: " + nivel);
         }
+    }
+
+    public static NivelJuego fromValor(int valor) {
+        for (NivelJuego nivel : NivelJuego.values()) {
+            if (nivel.getValor() == valor) {
+                return nivel;
+            }
+        }
+        throw new IllegalArgumentException("Valor de nivel inválido: " + valor);
     }
 }
