@@ -64,6 +64,43 @@ public class PartidoController {
         }
     }
 
+    @PostMapping("/{idPartido}/finalizar/{idUsuario}")
+    public ResponseEntity<?> finalizarPartido(@PathVariable Long idPartido, @PathVariable Long idUsuario) {
+        try {
+            Partido partido = partidoService.finalizarPartido(idPartido);
+            // Validación de creador ya está en el servicio
+            return ResponseEntity.ok(partido);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error interno: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/{idPartido}/cancelar/{idUsuario}")
+    public ResponseEntity<?> cancelarPartido(@PathVariable Long idPartido, @PathVariable Long idUsuario) {
+        try {
+            Partido partido = partidoService.cancelarPartido(idPartido, idUsuario);
+            return ResponseEntity.ok(partido);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error interno: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/{idPartido}/iniciar/{idUsuario}")
+    public ResponseEntity<?> iniciarPartido(@PathVariable Long idPartido, @PathVariable Long idUsuario) {
+        try {
+            Partido partido = partidoService.iniciarPartido(idPartido, idUsuario);
+            return ResponseEntity.ok(partido);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error interno: " + e.getMessage());
+        }
+    }
+
     @GetMapping
     public ResponseEntity<List<Partido>> obtenerTodosLosPartidos() {
         List<Partido> partidos = partidoService.obtenerTodosLosPartidos();

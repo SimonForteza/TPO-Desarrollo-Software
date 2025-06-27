@@ -7,11 +7,11 @@ import com.example.pds.model.strategyEmparejamiento.TipoEmparejamiento;
 
 public interface PartidoService {
     Partido crearPartido(CrearPartidoDTO crearPartidoDTO);
-    //Partido confirmarPartido(Long idPartido);
+    Partido iniciarPartido(Long idPartido, Long idUsuario);
     Partido finalizarPartido(Long idPartido);
     Partido cancelarPartido(Long idPartido, Long idUsuario);
     List<Partido> obtenerTodosLosPartidos();
-    //List<Partido> obtenerPartidos();
 
     List<Partido> obtenerPartidosEmparejados(Long usuarioId, TipoEmparejamiento tipoEmparejamiento);
+
 }
