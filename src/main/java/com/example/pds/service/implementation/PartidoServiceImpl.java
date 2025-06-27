@@ -26,6 +26,7 @@ import com.example.pds.util.GeocodingUtil;
 import com.example.pds.model.strategyEmparejamiento.EmparejamientoContext;
 import com.example.pds.model.strategyEmparejamiento.TipoEmparejamiento;
 import com.example.pds.model.factory.EmparejamientoFactory;
+import com.example.pds.service.UsuarioService;
 
 @Service
 public class PartidoServiceImpl implements PartidoService {
@@ -40,6 +41,8 @@ public class PartidoServiceImpl implements PartidoService {
     private UsuarioRepository usuarioRepository;
     @Autowired
     private UsuarioPartidoService usuarioPartidoService;
+    @Autowired
+    private UsuarioService usuarioService;
 
     // estrategia de emparejamiento
     private EmparejamientoStrategy estrategia;
@@ -185,7 +188,11 @@ public class PartidoServiceImpl implements PartidoService {
         List<Partido> partidos = partidoRepository.findAll();
 
         EmparejamientoContext contexto = new EmparejamientoContext();
-        contexto.setStrategy(EmparejamientoFactory.crearEstrategia(tipoEmparejamiento));
+        if (tipoEmparejamiento == TipoEmparejamiento.HISTORIAL) {
+            contexto.setStrategy(EmparejamientoFactory.crearEstrategia(tipoEmparejamiento, usuarioService));
+        } else {
+            contexto.setStrategy(EmparejamientoFactory.crearEstrategia(tipoEmparejamiento, null));
+        }
         return contexto.emparejar(usuario, partidos);
     }
 

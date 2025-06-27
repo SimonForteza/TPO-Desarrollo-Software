@@ -31,4 +31,8 @@ public class UsuarioPartido {
     private boolean confirmado; // Indica si el usuario confirmó su participación
 
     // Puedes agregar más campos si lo necesitas, como fecha de inscripción, estado, etc.
+
+    public Long obtenerIdUsuario() {
+        return usuario != null ? usuario.getId() : null;
+    }
 } 
