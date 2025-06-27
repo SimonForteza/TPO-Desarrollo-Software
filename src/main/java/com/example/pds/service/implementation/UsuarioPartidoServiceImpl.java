@@ -39,13 +39,13 @@ public class UsuarioPartidoServiceImpl implements UsuarioPartidoService {
         // Validar nivel de juego si el partido lo requiere
         if (!partido.isPermitirCualquierNivel()) {
             if (usuario.getNivelJuego() == null) {
-                throw new IllegalArgumentException("El usuario no tiene nivel de juego asignado.");
+                throw new IllegalArgumentException("El usuario no tiene nivel de juego asignado. Por favor, actualice su perfil con un nivel de juego para poder inscribirse a este partido.");
             }
             if (partido.getNivelMinimo() != null && usuario.getNivelJuego().getValor() < partido.getNivelMinimo().getValor()) {
-                throw new IllegalArgumentException("El nivel de juego del usuario es menor al mínimo requerido para este partido.");
+                throw new IllegalArgumentException("No puedes inscribirte a este partido porque tu nivel de juego ('" + usuario.getNivelJuego().name() + "') es menor al mínimo requerido ('" + partido.getNivelMinimo().name() + "').");
             }
             if (partido.getNivelMaximo() != null && usuario.getNivelJuego().getValor() > partido.getNivelMaximo().getValor()) {
-                throw new IllegalArgumentException("El nivel de juego del usuario es mayor al máximo permitido para este partido.");
+                throw new IllegalArgumentException("No puedes inscribirte a este partido porque tu nivel de juego ('" + usuario.getNivelJuego().name() + "') es mayor al máximo permitido ('" + partido.getNivelMaximo().name() + "').");
             }
         }
         // Validar estado del partido

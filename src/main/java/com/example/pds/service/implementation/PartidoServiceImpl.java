@@ -116,7 +116,8 @@ public class PartidoServiceImpl implements PartidoService {
         }
         Partido partidoGuardado = partidoRepository.save(partido);
         usuarioPartidoService.inscribirUsuarioAPartido(creador.getId(), partidoGuardado.getId());
-        return partidoGuardado;
+        // Volver a buscar el partido para que traiga las inscripciones actualizadas
+        return partidoRepository.findById(partidoGuardado.getId()).orElseThrow(() -> new RuntimeException("Partido no encontrado"));
     }
 
     @Override
@@ -139,17 +140,21 @@ public class PartidoServiceImpl implements PartidoService {
     }
 
     @Override
-    public Partido finalizarPartido(Long idPartido) {
+    public Partido finalizarPartido(Long idPartido, Long idUsuario) {
         if (idPartido == null) {
             throw new IllegalArgumentException("El ID del partido no puede ser nulo");
         }
-
+        if (idUsuario == null) {
+            throw new IllegalArgumentException("El ID del usuario no puede ser nulo");
+        }
         Partido partido = partidoRepository.findById(idPartido)
             .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
-
+        // Verificar si el usuario es el creador
+        if (partido.getCreador() == null || !partido.getCreador().getId().equals(idUsuario)) {
+            throw new IllegalArgumentException("Solo el creador del partido puede finalizarlo");
+        }
         PartidoContext context = new PartidoContext(partido);
         context.finalizar();
-
         return partidoRepository.save(context.getPartido());
     }
 
@@ -178,14 +183,14 @@ public class PartidoServiceImpl implements PartidoService {
 
     @Override
     public List<Partido> obtenerTodosLosPartidos() {
-        return partidoRepository.findAll();
+        return partidoRepository.findByEstadoNot(EstadoPartido.CANCELADO);
     }
 
     @Override
     public List<Partido> obtenerPartidosEmparejados(Long usuarioId, TipoEmparejamiento tipoEmparejamiento) {
         Usuario usuario = usuarioRepository.findById(usuarioId)
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
-        List<Partido> partidos = partidoRepository.findAll();
+        List<Partido> partidos = partidoRepository.findByEstadoNot(EstadoPartido.CANCELADO);
 
         EmparejamientoContext contexto = new EmparejamientoContext();
         if (tipoEmparejamiento == TipoEmparejamiento.HISTORIAL) {

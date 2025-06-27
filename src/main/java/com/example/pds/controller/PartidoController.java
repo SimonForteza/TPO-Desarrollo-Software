@@ -35,9 +35,17 @@ public class PartidoController {
 
     /* ------------------------------ ENDPOINTS ------------------------------ */
     @PostMapping
-    public ResponseEntity<Partido> crearPartido(@RequestBody CrearPartidoDTO crearPartidoDTO) {
-        Partido nuevoPartido = partidoService.crearPartido(crearPartidoDTO);
-        return ResponseEntity.ok(nuevoPartido);
+    public ResponseEntity<?> crearPartido(@RequestBody CrearPartidoDTO crearPartidoDTO) {
+        try {
+            Partido nuevoPartido = partidoService.crearPartido(crearPartidoDTO);
+            return ResponseEntity.ok(nuevoPartido);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error interno: " + e.getMessage());
+        }
     }
 
     @PostMapping("/{idPartido}/inscribir/{idUsuario}")
@@ -67,7 +75,7 @@ public class PartidoController {
     @PostMapping("/{idPartido}/finalizar/{idUsuario}")
     public ResponseEntity<?> finalizarPartido(@PathVariable Long idPartido, @PathVariable Long idUsuario) {
         try {
-            Partido partido = partidoService.finalizarPartido(idPartido);
+            Partido partido = partidoService.finalizarPartido(idPartido, idUsuario);
             // Validación de creador ya está en el servicio
             return ResponseEntity.ok(partido);
         } catch (IllegalArgumentException e) {
