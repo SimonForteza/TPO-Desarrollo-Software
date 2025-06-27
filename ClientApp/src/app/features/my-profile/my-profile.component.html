@@ -1,0 +1,170 @@
+<div class="profile-container">
+    <!-- Header del perfil -->
+    <div class="profile-header">
+      <div class="profile-info">
+        <div class="avatar-section">
+          <div class="avatar-large">
+            <img src="/placeholder.svg?height=80&width=80" alt="Avatar" class="avatar-img">
+            <button class="change-avatar-btn" title="Cambiar foto">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M23 19C23 19.5304 22.7893 20.0391 22.4142 20.4142C22.0391 20.7893 21.5304 21 21 21H3C2.46957 21 1.96086 20.7893 1.58579 20.4142C1.21071 20.0391 1 19.5304 1 19V8C1 7.46957 1.21071 6.96086 1.58579 6.58579C1.96086 6.21071 2.46957 6 3 6H7L9 3H15L17 6H21C21.5304 6 22.0391 6.21071 22.4142 6.58579C22.7893 6.96086 23 7.46957 23 8V19Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="user-details">
+          <h1 class="user-name">{{ currentUser?.nombre }} {{ currentUser?.apellido }}</h1>
+          <p class="user-email">{{ currentUser?.email }}</p>
+          <div class="user-stats">
+            <div class="stat">
+              <span class="stat-number">12</span>
+              <span class="stat-label">Partidos Jugados</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">8</span>
+              <span class="stat-label">Partidos Ganados</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">3</span>
+              <span class="stat-label">Deportes Favoritos</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="edit-profile-btn" (click)="toggleEditMode()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11 4H4C3.46957 4 2.96086 4.21071 2.58579 4.58579C2.21071 4.96086 2 5.46957 2 6V20C2 20.5304 2.21071 21.0391 2.58579 21.4142C2.96086 21.7893 3.46957 22 4 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V13" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M18.5 2.50023C18.8978 2.1024 19.4374 1.87891 20 1.87891C20.5626 1.87891 21.1022 2.1024 21.5 2.50023C21.8978 2.89805 22.1213 3.43762 22.1213 4.00023C22.1213 4.56284 21.8978 5.1024 21.5 5.50023L12 15.0002L8 16.0002L9 12.0002L18.5 2.50023Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+        </svg>
+        {{ isEditMode ? 'Cancelar' : 'Editar Perfil' }}
+      </button>
+    </div>
+  
+    <!-- Contenido del perfil -->
+    <div class="profile-content">
+      <!-- Información Personal -->
+      <div class="profile-section">
+        <h2>Información Personal</h2>
+        <div class="info-grid" *ngIf="!isEditMode">
+          <div class="info-item">
+            <label>Nombre Completo</label>
+            <span>{{ currentUser?.nombre }} {{ currentUser?.apellido }}</span>
+          </div>
+          <div class="info-item">
+            <label>Email</label>
+            <span>{{ currentUser?.email }}</span>
+          </div>
+          <div class="info-item">
+            <label>Teléfono</label>
+            <span>{{ currentUser?.telefono || 'No especificado' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Fecha de Nacimiento</label>
+            <span>{{ currentUser?.fechaNacimiento || 'No especificado' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Ubicación</label>
+            <span>{{ currentUser?.ubicacion || 'No especificado' }}</span>
+          </div>
+          <div class="info-item">
+            <label>Deporte Favorito</label>
+            <span>{{ currentUser?.deporteFavorito || 'No especificado' }}</span>
+          </div>
+        </div>
+  
+        <!-- Formulario de edición -->
+        <form [formGroup]="profileForm" (ngSubmit)="onSaveProfile()" *ngIf="isEditMode" class="edit-form">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="nombre">Nombre</label>
+              <input
+                type="text"
+                id="nombre"
+                formControlName="nombre"
+                class="form-control"
+              >
+            </div>
+            <div class="form-group">
+              <label for="apellido">Apellido</label>
+              <input
+                type="text"
+                id="apellido"
+                formControlName="apellido"
+                class="form-control"
+              >
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                id="email"
+                formControlName="email"
+                class="form-control"
+              >
+            </div>
+            <div class="form-group">
+              <label for="telefono">Teléfono</label>
+              <input
+                type="tel"
+                id="telefono"
+                formControlName="telefono"
+                class="form-control"
+              >
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="save-btn" [disabled]="profileForm.invalid || isLoading">
+              <span *ngIf="!isLoading">Guardar Cambios</span>
+              <span *ngIf="isLoading">Guardando...</span>
+            </button>
+            <button type="button" class="cancel-btn" (click)="cancelEdit()">
+              Cancelar
+            </button>
+          </div>
+        </form>
+      </div>
+  
+      <!-- Historial de Partidos -->
+      <div class="profile-section">
+        <h2>Historial de Partidos</h2>
+        <div class="matches-list">
+          <div class="match-item" *ngFor="let match of recentMatches">
+            <div class="match-info">
+              <div class="match-sport">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                  <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                </svg>
+                <span>{{ match.deporte }}</span>
+              </div>
+              <div class="match-details">
+                <h4>{{ match.nombre }}</h4>
+                <p>{{ match.fecha }} - {{ match.ubicacion }}</p>
+              </div>
+            </div>
+            <div class="match-result" [class]="match.resultado">
+              <span>{{ match.resultado }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Deportes Favoritos -->
+      <div class="profile-section">
+        <h2>Deportes Favoritos</h2>
+        <div class="sports-grid">
+          <div class="sport-card" *ngFor="let sport of favoriteSports">
+            <div class="sport-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                <path d="M12 6V12L16 14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h4>{{ sport.nombre }}</h4>
+            <p>{{ sport.partidosJugados }} partidos jugados</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

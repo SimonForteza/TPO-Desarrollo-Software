@@ -1,11 +1,24 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../../environment/environment';
 import { CreateUserRequest } from '../../../models/user-request.model';
 import { Usuario } from '../../../models/usuario.model';
 
+export interface LoginRequest {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponse {
+  id: number;
+  nombre: string;
+  apellido: string;
+  email: string;
+  telefono: string;
+  // Agregar otros campos que devuelva tu backend
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -49,4 +62,28 @@ export class UserService {
     console.error('Error en UserService:', error);
     return throwError(() => new Error(errorMessage));
   }
+
+login(loginData: LoginRequest): Observable<LoginResponse> {
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/json'
+  });
+
+  return this.http.post<LoginResponse>(`${this.apiUrl}/login`, loginData, { headers });
+}
+
+// Método para obtener usuario actual
+getCurrentUser(): any {
+  const userStr = localStorage.getItem('currentUser');
+  return userStr ? JSON.parse(userStr) : null;
+}
+
+// Método para logout
+logout(): void {
+  localStorage.removeItem('currentUser');
+}
+
+// Método para verificar si está logueado
+isLoggedIn(): boolean {
+  return this.getCurrentUser() !== null;
+}
 }
