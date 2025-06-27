@@ -1,4 +1,4 @@
-package com.example.pds.model.stategyEmparejamiento;
+package com.example.pds.model.strategyEmparejamiento;
 
 public enum TipoEmparejamiento {
     NIVEL,

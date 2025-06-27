@@ -3,7 +3,7 @@ package com.example.pds.service;
 import com.example.pds.model.entity.Partido;
 import com.example.pds.dto.CrearPartidoDTO;
 import java.util.List;
-import com.example.pds.model.stategyEmparejamiento.TipoEmparejamiento;
+import com.example.pds.model.strategyEmparejamiento.TipoEmparejamiento;
 
 public interface PartidoService {
     Partido crearPartido(CrearPartidoDTO crearPartidoDTO);

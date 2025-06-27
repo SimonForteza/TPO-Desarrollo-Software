@@ -1,9 +1,9 @@
 package com.example.pds.model.factory;
 
-import com.example.pds.model.stategyEmparejamiento.EmparejamientoPorCercaniaStrategy;
-import com.example.pds.model.stategyEmparejamiento.EmparejamientoPorNivelStrategy;
-import com.example.pds.model.stategyEmparejamiento.EmparejamientoStrategy;
-import com.example.pds.model.stategyEmparejamiento.TipoEmparejamiento;
+import com.example.pds.model.strategyEmparejamiento.EmparejamientoPorCercaniaStrategy;
+import com.example.pds.model.strategyEmparejamiento.EmparejamientoPorNivelStrategy;
+import com.example.pds.model.strategyEmparejamiento.EmparejamientoStrategy;
+import com.example.pds.model.strategyEmparejamiento.TipoEmparejamiento;
 
 public class EmparejamientoFactory {
     public static EmparejamientoStrategy crearEstrategia(TipoEmparejamiento tipo) {

@@ -16,7 +16,7 @@ import com.example.pds.dto.CrearPartidoDTO;
 import com.example.pds.model.entity.UsuarioPartido;
 import com.example.pds.service.UsuarioPartidoService;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.example.pds.model.stategyEmparejamiento.TipoEmparejamiento;
+import com.example.pds.model.strategyEmparejamiento.TipoEmparejamiento;
 import org.springframework.web.bind.annotation.RequestParam;
 
 

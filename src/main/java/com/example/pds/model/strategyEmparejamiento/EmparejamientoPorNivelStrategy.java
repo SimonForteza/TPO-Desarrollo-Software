@@ -1,4 +1,4 @@
-package com.example.pds.model.stategyEmparejamiento;
+package com.example.pds.model.strategyEmparejamiento;
 
 import com.example.pds.model.entity.Partido;
 import com.example.pds.model.entity.Usuario;
