@@ -53,6 +53,10 @@ public class UsuarioPartidoServiceImpl implements UsuarioPartidoService {
         usuarioPartido.setConfirmado(false); // Por defecto no confirmado
         usuarioPartido = usuarioPartidoRepository.save(usuarioPartido);
 
+        // Recargar el partido para obtener las inscripciones actualizadas
+        partido = partidoRepository.findById(idPartido)
+            .orElseThrow(() -> new IllegalArgumentException("Partido no encontrado con id: " + idPartido));
+
         // Actualizar estado del partido usando el patrón State
         PartidoContext partidoContext = new PartidoContext(partido);
         partidoContext.alcanzarNumeroRequerido();
@@ -74,9 +78,18 @@ public class UsuarioPartidoServiceImpl implements UsuarioPartidoService {
         UsuarioPartido usuarioPartido = usuarioPartidoRepository.findByUsuarioAndPartido(usuario, partido)
             .orElseThrow(() -> new IllegalArgumentException("El usuario no está inscripto en este partido."));
 
+        // Validar si el usuario ya confirmó el partido
+        if (usuarioPartido.isConfirmado()) {
+            throw new IllegalArgumentException("El usuario ya confirmó su participación en este partido.");
+        }
+
         // Confirmar al usuario
         usuarioPartido.setConfirmado(true);
         usuarioPartido = usuarioPartidoRepository.save(usuarioPartido);
+
+        // Recargar el partido para obtener las confirmaciones actualizadas
+        partido = partidoRepository.findById(idPartido)
+            .orElseThrow(() -> new IllegalArgumentException("Partido no encontrado con id: " + idPartido));
 
         // Actualizar estado del partido usando el contexto
         PartidoContext context = new PartidoContext(partido);
