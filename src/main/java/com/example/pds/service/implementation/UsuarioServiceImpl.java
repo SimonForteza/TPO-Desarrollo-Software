@@ -6,13 +6,18 @@ import com.example.pds.model.entity.Deporte;
 import com.example.pds.model.entity.NivelJuego;
 import com.example.pds.model.entity.Usuario;
 import com.example.pds.model.entity.Ubicacion;
+import com.example.pds.model.entity.Partido;
+import com.example.pds.model.entity.UsuarioPartido;
 import com.example.pds.repository.DeporteRepository;
 import com.example.pds.repository.UsuarioRepository;
 import com.example.pds.repository.UbicacionRepository;
+import com.example.pds.repository.UsuarioPartidoRepository;
 import com.example.pds.service.UsuarioService;
 import com.example.pds.util.GeocodingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
@@ -25,6 +30,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     private UbicacionRepository ubicacionRepository;
+
+    @Autowired
+    private UsuarioPartidoRepository usuarioPartidoRepository;
 
     @Override
     public Usuario crearUsuario(CrearUsuarioDTO dto) {
@@ -42,6 +50,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
         if (dto.nivelJuego() == null || dto.nivelJuego().isBlank()) {
             throw new IllegalArgumentException("El nivel de juego es obligatorio");
+        }
+
+        // Verificar que no exista ya un usuario con ese email
+        if (usuarioRepository.findByEmail(dto.email()).isPresent()) {
+            throw new IllegalArgumentException("Ya existe un usuario con el email: " + dto.email());
         }
 
         Usuario usuario = new Usuario();
@@ -83,5 +96,17 @@ public class UsuarioServiceImpl implements UsuarioService {
         }
 
         return usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public List<Partido> obtenerPartidosDeUsuario(Long idUsuario) {
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+            .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + idUsuario));
+        
+        List<UsuarioPartido> inscripciones = usuarioPartidoRepository.findByUsuario(usuario);
+        
+        return inscripciones.stream()
+            .map(UsuarioPartido::getPartido)
+            .collect(Collectors.toList());
     }
 } 
