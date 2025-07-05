@@ -27,9 +27,11 @@ import com.example.pds.model.strategyEmparejamiento.EmparejamientoContext;
 import com.example.pds.model.strategyEmparejamiento.TipoEmparejamiento;
 import com.example.pds.model.factory.EmparejamientoFactory;
 import com.example.pds.service.UsuarioService;
+import com.example.pds.service.BaseService;
+
 
 @Service
-public class PartidoServiceImpl implements PartidoService {
+public class PartidoServiceImpl extends BaseService implements PartidoService {
 
     @Autowired
     private PartidoRepository partidoRepository;
@@ -44,10 +46,12 @@ public class PartidoServiceImpl implements PartidoService {
     @Autowired
     private UsuarioService usuarioService;
 
+
     // estrategia de emparejamiento
     private EmparejamientoStrategy estrategia;
 
     public Partido crearPartido(CrearPartidoDTO dto) {
+        validateStringNotNullOrEmpty(dto.nombreDeporte(), "nombre del deporte");
         Deporte deporte = deporteRepository.findByNombre(dto.nombreDeporte())
             .orElseThrow(() -> new RuntimeException("Deporte no encontrado"));
 
@@ -72,8 +76,8 @@ public class PartidoServiceImpl implements PartidoService {
             ubicacion = ubicacionRepository.save(ubicacion);
         }
 
-        Usuario creador = usuarioRepository.findById(dto.creadorId())
-            .orElseThrow(() -> new RuntimeException("Usuario creador no encontrado"));
+        Usuario creador = repositoryUtils.findByIdOrThrow(usuarioRepository, dto.creadorId(), 
+            () -> new RuntimeException("Usuario creador no encontrado"));
         
         // Combinar fecha y hora en LocalDateTime
         java.time.LocalDateTime fechaHora = java.time.LocalDateTime.of(dto.fecha(), dto.hora());
@@ -117,19 +121,16 @@ public class PartidoServiceImpl implements PartidoService {
         Partido partidoGuardado = partidoRepository.save(partido);
         usuarioPartidoService.inscribirUsuarioAPartido(creador.getId(), partidoGuardado.getId());
         // Volver a buscar el partido para que traiga las inscripciones actualizadas
-        return partidoRepository.findById(partidoGuardado.getId()).orElseThrow(() -> new RuntimeException("Partido no encontrado"));
+        return repositoryUtils.findByIdOrThrow(partidoRepository, partidoGuardado.getId(), 
+            () -> new RuntimeException("Partido no encontrado"));
     }
 
     @Override
     public Partido iniciarPartido(Long idPartido, Long idUsuario) {
-        if (idPartido == null) {
-            throw new IllegalArgumentException("El ID del partido no puede ser nulo");
-        }
-        if (idUsuario == null) {
-            throw new IllegalArgumentException("El ID del usuario no puede ser nulo");
-        }
-        Partido partido = partidoRepository.findById(idPartido)
-            .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
+        repositoryUtils.validateIdNotNull(idPartido, "partido");
+        repositoryUtils.validateIdNotNull(idUsuario, "usuario");
+        Partido partido = repositoryUtils.findByIdOrThrow(partidoRepository, idPartido, 
+            () -> new RuntimeException("Partido no encontrado"));
         // Verificar si el usuario es el creador
         if (partido.getCreador() == null || !partido.getCreador().getId().equals(idUsuario)) {
             throw new IllegalArgumentException("Solo el creador del partido puede iniciarlo");
@@ -141,14 +142,10 @@ public class PartidoServiceImpl implements PartidoService {
 
     @Override
     public Partido finalizarPartido(Long idPartido, Long idUsuario) {
-        if (idPartido == null) {
-            throw new IllegalArgumentException("El ID del partido no puede ser nulo");
-        }
-        if (idUsuario == null) {
-            throw new IllegalArgumentException("El ID del usuario no puede ser nulo");
-        }
-        Partido partido = partidoRepository.findById(idPartido)
-            .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
+        repositoryUtils.validateIdNotNull(idPartido, "partido");
+        repositoryUtils.validateIdNotNull(idUsuario, "usuario");
+        Partido partido = repositoryUtils.findByIdOrThrow(partidoRepository, idPartido, 
+            () -> new RuntimeException("Partido no encontrado"));
         // Verificar si el usuario es el creador
         if (partido.getCreador() == null || !partido.getCreador().getId().equals(idUsuario)) {
             throw new IllegalArgumentException("Solo el creador del partido puede finalizarlo");
@@ -160,15 +157,11 @@ public class PartidoServiceImpl implements PartidoService {
 
     @Override
     public Partido cancelarPartido(Long idPartido, Long idUsuario) {
-        if (idPartido == null) {
-            throw new IllegalArgumentException("El ID del partido no puede ser nulo");
-        }
-        if (idUsuario == null) {
-            throw new IllegalArgumentException("El ID del usuario no puede ser nulo");
-        }
+        repositoryUtils.validateIdNotNull(idPartido, "partido");
+        repositoryUtils.validateIdNotNull(idUsuario, "usuario");
 
-        Partido partido = partidoRepository.findById(idPartido)
-                .orElseThrow(() -> new RuntimeException("Partido no encontrado"));
+        Partido partido = repositoryUtils.findByIdOrThrow(partidoRepository, idPartido, 
+            () -> new RuntimeException("Partido no encontrado"));
 
         // Verificar si el usuario es el creador
         if (partido.getCreador() == null || !partido.getCreador().getId().equals(idUsuario)) {
@@ -188,8 +181,8 @@ public class PartidoServiceImpl implements PartidoService {
 
     @Override
     public List<Partido> obtenerPartidosEmparejados(Long usuarioId, TipoEmparejamiento tipoEmparejamiento) {
-        Usuario usuario = usuarioRepository.findById(usuarioId)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Usuario usuario = repositoryUtils.findByIdOrThrow(usuarioRepository, usuarioId, 
+            () -> new RuntimeException("Usuario no encontrado"));
         List<Partido> partidos = partidoRepository.findByEstadoNot(EstadoPartido.CANCELADO);
 
         EmparejamientoContext contexto = new EmparejamientoContext();

@@ -1,6 +1,7 @@
 package com.example.pds.service.implementation;
 
 import com.example.pds.service.DeporteService;
+import com.example.pds.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import java.util.List;
 import java.text.Normalizer;
 
 @Service
-public class DeporteServiceImpl implements DeporteService {
+public class DeporteServiceImpl extends BaseService implements DeporteService {
     
     private DeporteRepository deporteRepository;
 
@@ -21,6 +22,7 @@ public class DeporteServiceImpl implements DeporteService {
 
     // Methods
     public Deporte crearDeporte(Deporte deporte){
+        validateStringNotNullOrEmpty(deporte.getNombre(), "nombre del deporte");
         // Normalizar el nombre: quitar tildes y pasar a minúsculas
         String nombreNormalizado = Normalizer.normalize(deporte.getNombre(), Normalizer.Form.NFD)
             .replaceAll("\\p{InCombiningDiacriticalMarks}+", "")

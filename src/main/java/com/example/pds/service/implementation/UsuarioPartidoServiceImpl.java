@@ -6,6 +6,7 @@ import com.example.pds.model.entity.UsuarioPartido;
 import com.example.pds.model.state.PartidoContext;
 import com.example.pds.repository.UsuarioPartidoRepository;
 import com.example.pds.service.UsuarioPartidoService;
+import com.example.pds.service.BaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
@@ -14,7 +15,7 @@ import com.example.pds.repository.UsuarioRepository;
 import com.example.pds.repository.PartidoRepository;
 
 @Service
-public class UsuarioPartidoServiceImpl implements UsuarioPartidoService {
+public class UsuarioPartidoServiceImpl extends BaseService implements UsuarioPartidoService {
 
     @Autowired
     private UsuarioPartidoRepository usuarioPartidoRepository;
@@ -23,13 +24,13 @@ public class UsuarioPartidoServiceImpl implements UsuarioPartidoService {
     @Autowired
     private PartidoRepository partidoRepository;
 
+
     @Override
     public UsuarioPartido inscribirUsuarioAPartido(Long idUsuario, Long idPartido) {
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-            .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con id: " + idUsuario));
-
-        Partido partido = partidoRepository.findById(idPartido)
-            .orElseThrow(() -> new IllegalArgumentException("Partido no encontrado con id: " + idPartido));
+        Usuario usuario = repositoryUtils.findByIdOrThrow(usuarioRepository, idUsuario, 
+            () -> new IllegalArgumentException("usuario no encontrado con id: " + idUsuario));
+        Partido partido = repositoryUtils.findByIdOrThrow(partidoRepository, idPartido, 
+            () -> new IllegalArgumentException("partido no encontrado con id: " + idPartido));
 
         // Validar si el usuario ya está inscripto
         Optional<UsuarioPartido> existente = usuarioPartidoRepository.findByUsuarioAndPartido(usuario, partido);
@@ -66,8 +67,8 @@ public class UsuarioPartidoServiceImpl implements UsuarioPartidoService {
         usuarioPartido = usuarioPartidoRepository.save(usuarioPartido);
 
         // Recargar el partido para obtener las inscripciones actualizadas
-        partido = partidoRepository.findById(idPartido)
-            .orElseThrow(() -> new IllegalArgumentException("Partido no encontrado con id: " + idPartido));
+        partido = repositoryUtils.findByIdOrThrow(partidoRepository, idPartido, 
+            () -> new IllegalArgumentException("partido no encontrado con id: " + idPartido));
 
         // Actualizar estado del partido usando el patrón State
         PartidoContext partidoContext = new PartidoContext(partido);
@@ -81,11 +82,10 @@ public class UsuarioPartidoServiceImpl implements UsuarioPartidoService {
 
     @Override
     public UsuarioPartido confirmarPartido(Long idUsuario, Long idPartido) {
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-            .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con id: " + idUsuario));
-
-        Partido partido = partidoRepository.findById(idPartido)
-            .orElseThrow(() -> new IllegalArgumentException("Partido no encontrado con id: " + idPartido));
+        Usuario usuario = repositoryUtils.findByIdOrThrow(usuarioRepository, idUsuario, 
+            () -> new IllegalArgumentException("usuario no encontrado con id: " + idUsuario));
+        Partido partido = repositoryUtils.findByIdOrThrow(partidoRepository, idPartido, 
+            () -> new IllegalArgumentException("partido no encontrado con id: " + idPartido));
 
         UsuarioPartido usuarioPartido = usuarioPartidoRepository.findByUsuarioAndPartido(usuario, partido)
             .orElseThrow(() -> new IllegalArgumentException("El usuario no está inscripto en este partido."));
@@ -100,8 +100,8 @@ public class UsuarioPartidoServiceImpl implements UsuarioPartidoService {
         usuarioPartido = usuarioPartidoRepository.save(usuarioPartido);
 
         // Recargar el partido para obtener las confirmaciones actualizadas
-        partido = partidoRepository.findById(idPartido)
-            .orElseThrow(() -> new IllegalArgumentException("Partido no encontrado con id: " + idPartido));
+        partido = repositoryUtils.findByIdOrThrow(partidoRepository, idPartido, 
+            () -> new IllegalArgumentException("partido no encontrado con id: " + idPartido));
 
         // Actualizar estado del partido usando el contexto
         PartidoContext context = new PartidoContext(partido);

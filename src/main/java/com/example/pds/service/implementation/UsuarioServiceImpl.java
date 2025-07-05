@@ -13,6 +13,7 @@ import com.example.pds.repository.UsuarioRepository;
 import com.example.pds.repository.UbicacionRepository;
 import com.example.pds.repository.UsuarioPartidoRepository;
 import com.example.pds.service.UsuarioService;
+import com.example.pds.service.BaseService;
 import com.example.pds.util.GeocodingUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UsuarioServiceImpl implements UsuarioService {
+public class UsuarioServiceImpl extends BaseService implements UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -34,23 +35,14 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private UsuarioPartidoRepository usuarioPartidoRepository;
 
+
     @Override
     public Usuario crearUsuario(CrearUsuarioDTO dto) {
-        if (dto.username() == null || dto.username().isBlank()) {
-            throw new IllegalArgumentException("El nombre de usuario es obligatorio");
-        }
-        if (dto.email() == null || dto.email().isBlank()) {
-            throw new IllegalArgumentException("El email es obligatorio");
-        }
-        if (dto.password() == null || dto.password().isBlank()) {
-            throw new IllegalArgumentException("La contraseña es obligatoria");
-        }
-        if (dto.deporteFavorito() == null || dto.deporteFavorito().isBlank()) {
-            throw new IllegalArgumentException("El deporte favorito es obligatorio");
-        }
-        if (dto.nivelJuego() == null || dto.nivelJuego().isBlank()) {
-            throw new IllegalArgumentException("El nivel de juego es obligatorio");
-        }
+        validateStringNotNullOrEmpty(dto.username(), "nombre de usuario");
+        validateStringNotNullOrEmpty(dto.email(), "email");
+        validateStringNotNullOrEmpty(dto.password(), "contraseña");
+        validateStringNotNullOrEmpty(dto.deporteFavorito(), "deporte favorito");
+        validateStringNotNullOrEmpty(dto.nivelJuego(), "nivel de juego");
 
         // Verificar que no exista ya un usuario con ese email
         if (usuarioRepository.findByEmail(dto.email()).isPresent()) {
@@ -100,8 +92,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public List<Partido> obtenerPartidosDeUsuario(Long idUsuario) {
-        Usuario usuario = usuarioRepository.findById(idUsuario)
-            .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + idUsuario));
+        Usuario usuario = repositoryUtils.findByIdOrThrow(usuarioRepository, idUsuario, 
+            () -> new IllegalArgumentException("usuario no encontrado con id: " + idUsuario));
         
         List<UsuarioPartido> inscripciones = usuarioPartidoRepository.findByUsuario(usuario);
         
