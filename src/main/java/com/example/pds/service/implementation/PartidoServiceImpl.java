@@ -4,7 +4,6 @@ import com.example.pds.model.state.EstadoPartido;
 import com.example.pds.model.entity.Partido;
 import com.example.pds.model.entity.Ubicacion;
 import com.example.pds.model.state.PartidoContext;
-import com.example.pds.model.strategyEmparejamiento.EmparejamientoStrategy;
 import com.example.pds.repository.PartidoRepository;
 import com.example.pds.service.PartidoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +46,6 @@ public class PartidoServiceImpl extends BaseService implements PartidoService {
     private UsuarioService usuarioService;
 
 
-    // estrategia de emparejamiento
-    private EmparejamientoStrategy estrategia;
 
     public Partido crearPartido(CrearPartidoDTO dto) {
         validateStringNotNullOrEmpty(dto.nombreDeporte(), "nombre del deporte");
