@@ -13,6 +13,7 @@ import java.util.Optional;
 import com.example.pds.model.state.EstadoPartido;
 import com.example.pds.repository.UsuarioRepository;
 import com.example.pds.repository.PartidoRepository;
+import com.example.pds.notification.NotificacionUtils;
 
 @Service
 public class UsuarioPartidoServiceImpl extends BaseService implements UsuarioPartidoService {
@@ -70,9 +71,10 @@ public class UsuarioPartidoServiceImpl extends BaseService implements UsuarioPar
         partido = repositoryUtils.findByIdOrThrow(partidoRepository, idPartido, 
             () -> new IllegalArgumentException("partido no encontrado con id: " + idPartido));
 
-        // Actualizar estado del partido usando el patrón State
         PartidoContext partidoContext = new PartidoContext(partido);
-        partidoContext.alcanzarNumeroRequerido();
+        NotificacionUtils.adjuntarObservers(partidoContext, usuario);
+        // Actualizar estado del partido usando el patrón State
+        partidoContext.alcanzarNumeroRequerido(usuario);
         
         // Guardar el partido con el estado actualizado
         partidoRepository.save(partido);
@@ -103,17 +105,16 @@ public class UsuarioPartidoServiceImpl extends BaseService implements UsuarioPar
         partido = repositoryUtils.findByIdOrThrow(partidoRepository, idPartido, 
             () -> new IllegalArgumentException("partido no encontrado con id: " + idPartido));
 
-        // Actualizar estado del partido usando el contexto
         PartidoContext context = new PartidoContext(partido);
-        
-        // Si está en NECESITAMOS_JUGADORES, verificar si se alcanzó el número requerido
+        NotificacionUtils.adjuntarObservers(context, usuario);
+        // Actualizar estado del partido usando el contexto
         if (partido.getEstado() == EstadoPartido.NECESITAMOS_JUGADORES) {
-            context.alcanzarNumeroRequerido();
+            context.alcanzarNumeroRequerido(usuario);
         }
         
         // Si está en PARTIDO_ARMADO, verificar si todos confirmaron
         if (partido.getEstado() == EstadoPartido.PARTIDO_ARMADO) {
-            context.confirmar();
+            context.confirmar(usuario);
         }
         
         // Guardar el partido con el estado actualizado

@@ -27,6 +27,11 @@ import com.example.pds.model.strategyEmparejamiento.TipoEmparejamiento;
 import com.example.pds.model.factory.EmparejamientoFactory;
 import com.example.pds.service.UsuarioService;
 import com.example.pds.service.BaseService;
+import com.example.pds.notification.Notificador;
+import com.example.pds.notification.adapter.EmailNotificationAdapter;
+import com.example.pds.notification.adapter.PushNotificationAdapter;
+import com.example.pds.notification.adapter.INotification;
+import com.example.pds.notification.NotificacionUtils;
 
 
 @Service
@@ -77,7 +82,7 @@ public class PartidoServiceImpl extends BaseService implements PartidoService {
             () -> new RuntimeException("Usuario creador no encontrado"));
         
         // Combinar fecha y hora en LocalDateTime
-        java.time.LocalDateTime fechaHora = java.time.LocalDateTime.of(dto.fecha(), dto.hora());
+        LocalDateTime fechaHora = java.time.LocalDateTime.of(dto.fecha(), dto.hora());
 
         Partido partido = new Partido();
         partido.setDeporte(deporte);
@@ -85,6 +90,12 @@ public class PartidoServiceImpl extends BaseService implements PartidoService {
         partido.setUbicacion(ubicacion);
         partido.setCreador(creador);
         partido.setEstado(EstadoPartido.NECESITAMOS_JUGADORES);
+
+        // Suscribir al creador como observer
+        PartidoContext context = new PartidoContext(partido);
+        List<INotification> metodosNotificacion = List.of(new EmailNotificationAdapter(), new PushNotificationAdapter());
+        Notificador observerCreador = new Notificador(metodosNotificacion, creador);
+        context.attach(observerCreador);
 
         // seteamos los niveles de juego si partido no es de cualquier nivel
         partido.setPermitirCualquierNivel(dto.permitirCualquierNivel());
@@ -133,7 +144,9 @@ public class PartidoServiceImpl extends BaseService implements PartidoService {
             throw new IllegalArgumentException("Solo el creador del partido puede iniciarlo");
         }
         PartidoContext context = new PartidoContext(partido);
-        context.iniciar();
+        Usuario usuario = repositoryUtils.findByIdOrThrow(usuarioRepository, idUsuario, () -> new RuntimeException("Usuario no encontrado"));
+        NotificacionUtils.adjuntarObservers(context, usuario);
+        context.iniciar(usuario);
         return partidoRepository.save(context.getPartido());
     }
 
@@ -148,7 +161,9 @@ public class PartidoServiceImpl extends BaseService implements PartidoService {
             throw new IllegalArgumentException("Solo el creador del partido puede finalizarlo");
         }
         PartidoContext context = new PartidoContext(partido);
-        context.finalizar();
+        Usuario usuario = repositoryUtils.findByIdOrThrow(usuarioRepository, idUsuario, () -> new RuntimeException("Usuario no encontrado"));
+        NotificacionUtils.adjuntarObservers(context, usuario);
+        context.finalizar(usuario);
         return partidoRepository.save(context.getPartido());
     }
 
@@ -166,7 +181,9 @@ public class PartidoServiceImpl extends BaseService implements PartidoService {
         }
 
         PartidoContext context = new PartidoContext(partido);
-        context.cancelar();
+        Usuario usuario = repositoryUtils.findByIdOrThrow(usuarioRepository, idUsuario, () -> new RuntimeException("Usuario no encontrado"));
+        NotificacionUtils.adjuntarObservers(context, usuario);
+        context.cancelar(usuario);
 
         return partidoRepository.save(context.getPartido());
     }

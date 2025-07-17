@@ -2,6 +2,7 @@ package com.example.pds.notification;
 
 import java.util.List;
 import java.util.ArrayList;
+import com.example.pds.model.entity.Usuario;
 
 public abstract class IObservable {
     private List<IObserver> observers;
@@ -16,9 +17,9 @@ public abstract class IObservable {
     public void detach(IObserver observer) {
         observers.remove(observer);
     }
-    public void notifyObservers() {
+    public void notifyObservers(Usuario usuarioResponsable) {
         for (IObserver observer : observers) {
-            observer.update(this);
+            observer.update(this, usuarioResponsable);
         }
     }
 } 
