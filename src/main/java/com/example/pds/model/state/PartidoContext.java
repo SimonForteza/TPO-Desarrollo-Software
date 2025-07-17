@@ -2,10 +2,11 @@ package com.example.pds.model.state;
 
 import com.example.pds.model.entity.Partido;
 import com.example.pds.model.factory.EstadoFactory;
+import com.example.pds.notification.IObservable;
 import lombok.Data;
 
 @Data
-public class PartidoContext {
+public class PartidoContext extends IObservable {
     private Partido partido;
     private PartidoState estadoActual;
 
@@ -37,5 +38,6 @@ public class PartidoContext {
     public void setEstado(PartidoState nuevoEstado) {
         this.estadoActual = nuevoEstado;
         this.partido.setEstado(EstadoFactory.obtenerEstadoEnum(nuevoEstado));
+        this.notifyObservers(); // Notificar a los observers del cambio de estado
     }
 }
